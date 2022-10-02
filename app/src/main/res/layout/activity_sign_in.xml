@@ -8,6 +8,7 @@
     android:overScrollMode="never"
     android:padding="@dimen/_24sdp"
     android:scrollbars="none"
+    android:background="@drawable/background_sign_in_screen"
     tools:context=".activities.SignInActivity">
 
     <LinearLayout
@@ -22,14 +23,14 @@
             android:layout_marginTop="@dimen/_40sdp"
             android:text="@string/buckeye_schedule"
             android:textColor="@color/primary_text"
-            android:textSize="48sp"
+            android:textSize="52sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/inputEmail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_32sdp"
             android:background="@drawable/background_input"
             android:hint="@string/email"
             android:imeOptions="actionNext"
@@ -86,7 +87,7 @@
             android:layout_marginTop="@dimen/_24sdp"
             android:text="@string/sign_up_new_account"
             android:textColor="@color/primary"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
     </LinearLayout>
