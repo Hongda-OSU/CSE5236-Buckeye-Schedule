@@ -1,14 +1,16 @@
-package com.cse5236.buckeyeschedule;
+package com.cse5236.buckeyeschedule.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.cse5236.buckeyeschedule.R;
+
+public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_screen);
+        setContentView(R.layout.activity_sign_up);
     }
 }
