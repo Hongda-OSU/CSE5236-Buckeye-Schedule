@@ -18,12 +18,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textBuckeyeSchedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
+            android:fontFamily="sans-serif-black"
             android:text="@string/buckeye_schedule"
             android:textColor="@color/primary_text"
-            android:textSize="52sp"
+            android:textSize="56sp"
             android:textStyle="bold" />
 
         <EditText
@@ -60,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_20sdp"
-            android:animateLayoutChanges="true" >
+            android:animateLayoutChanges="true">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonSignIn"
@@ -77,17 +79,17 @@
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </FrameLayout>
 
         <TextView
-            android:id="@+id/createNewAccount"
+            android:id="@+id/signUpNewAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_18sdp"
             android:text="@string/sign_up_new_account"
             android:textColor="@color/primary"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />
 
     </LinearLayout>

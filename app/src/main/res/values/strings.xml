@@ -10,4 +10,5 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="create_new_account">Create New Account</string>
+    <string name="back_to_sign_in">BACK TO SIGN IN</string>
 </resources>

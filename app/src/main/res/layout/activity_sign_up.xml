@@ -18,6 +18,7 @@
         android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/textCreateNewAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
@@ -101,7 +102,6 @@
                 app:riv_border_width="4dip"
                 app:riv_border_color="#333333"
                 app:riv_mutate_background="true"
-                app:riv_tile_mode="repeat"
                 app:riv_oval="true" />
 
             <TextView
@@ -138,6 +138,7 @@
                 android:layout_gravity="center"
                 android:visibility="invisible"/>
 
+
         </FrameLayout>
 
         <TextView
@@ -145,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:text="BACK TO SIGN IN"
+            android:text="@string/back_to_sign_in"
             android:textColor="@color/primary"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "931049995852",
+    "project_id": "buckeye-schedule",
+    "storage_bucket": "buckeye-schedule.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931049995852:android:0295317ae7cfd462413ee9",
+        "android_client_info": {
+          "package_name": "com.cse5236.buckeyeschedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931049995852-hpbigi2j2rguq4iq9sf2m9u6lk2uavr0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_Sq8t99hIY5bODnlwjauVXuHlCDTPco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931049995852-hpbigi2j2rguq4iq9sf2m9u6lk2uavr0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
