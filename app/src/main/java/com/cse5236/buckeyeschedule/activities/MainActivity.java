@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         preferenceManager.getString(Constants.KEY_USER_ID)
                 );
         HashMap<String, Object> updates = new HashMap<>();
-        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
         documentReference.update(updates)
                 .addOnSuccessListener(unused -> {
                     preferenceManager.clear();
