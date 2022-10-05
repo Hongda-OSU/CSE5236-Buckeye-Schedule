@@ -93,15 +93,34 @@
                 android:visibility="invisible" />
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/signUpNewAccount"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:text="@string/sign_up_new_account"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/don_t_have_account"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/signUpNewAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/sign_up_new_account"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

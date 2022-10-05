@@ -32,7 +32,7 @@
             android:id="@+id/inputName"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             android:background="@drawable/background_input"
             android:hint="@string/user_name"
             android:imeOptions="actionNext"
@@ -111,7 +111,7 @@
             android:id="@+id/layoutImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp">
+            android:layout_marginTop="@dimen/_12sdp">
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imageProfile"
@@ -138,7 +138,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:animateLayoutChanges="true" >
 
             <com.google.android.material.button.MaterialButton
@@ -157,19 +157,37 @@
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
                 android:visibility="invisible"/>
-
-
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/backToSignIn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:text="@string/back_to_sign_in"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account?"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/backToSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/back_to_sign_in"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
 
 
     </LinearLayout>
