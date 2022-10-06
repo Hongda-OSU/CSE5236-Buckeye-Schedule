@@ -1,6 +1,9 @@
 package com.cse5236.buckeyeschedule.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,12 +15,13 @@ import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.databinding.ActivityMainBinding;
+import com.cse5236.buckeyeschedule.fragments.AccountFragment;
+import com.cse5236.buckeyeschedule.fragments.ScheduleFragment;
+import com.cse5236.buckeyeschedule.fragments.SearchFragment;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 
@@ -32,45 +36,70 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        replaceFragment(new ScheduleFragment(), "Schedule");
         loadUserDetails();
-        setListener();
-        Log.d("lifecycle","onCreate invoked");
+        setListeners();
+        Log.d("activity lifecycle","onCreate invoked");
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("lifecycle","onStart invoked");
+        Log.d("activity lifecycle","onStart invoked");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("lifecycle","onResume invoked");
+        Log.d("activity lifecycle","onResume invoked");
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("lifecycle","onPause invoked");
+        Log.d("activity lifecycle","onPause invoked");
     }
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("lifecycle","onStop invoked");
+        Log.d("activity lifecycle","onStop invoked");
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("lifecycle","onRestart invoked");
+        Log.d("activity lifecycle","onRestart invoked");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("lifecycle","onDestroy invoked");
+        Log.d("activity lifecycle","onDestroy invoked");
     }
 
-    private void setListener() {
+    private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.schedule:
+                    replaceFragment(new ScheduleFragment(), "Schedule");
+                    break;
+                case R.id.search:
+                    replaceFragment(new SearchFragment(), "Search");
+                    break;
+                case R.id.account:
+                    replaceFragment(new AccountFragment(), "Account");
+                    break;
+            }
+            return true;
+        });
+    }
+
+    private void replaceFragment(Fragment fragment, String tag){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment, tag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 
     private void loadUserDetails() {
