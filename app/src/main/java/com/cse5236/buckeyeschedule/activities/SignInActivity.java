@@ -32,39 +32,39 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setListeners();
-        Log.d("activity lifecycle","onCreate invoked");
+        Log.d("activity lifecycle","SignInActivity onCreate invoked");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("activity lifecycle","onStart invoked");
+        Log.d("activity lifecycle","SignInActivity onStart invoked");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("activity lifecycle","onResume invoked");
+        Log.d("activity lifecycle","SignInActivity onResume invoked");
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("activity lifecycle","onPause invoked");
+        Log.d("activity lifecycle","SignInActivity onPause invoked");
     }
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("activity lifecycle","onStop invoked");
+        Log.d("activity lifecycle","SignInActivity onStop invoked");
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("activity lifecycle","onRestart invoked");
+        Log.d("activity lifecycle","SignInActivity onRestart invoked");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("activity lifecycle","onDestroy invoked");
+        Log.d("activity lifecycle","SignInActivity onDestroy invoked");
     }
 
     private void setListeners() {

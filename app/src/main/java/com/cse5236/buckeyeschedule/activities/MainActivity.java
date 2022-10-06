@@ -39,40 +39,39 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new ScheduleFragment(), "Schedule");
         loadUserDetails();
         setListeners();
-        Log.d("activity lifecycle","onCreate invoked");
-
+        Log.d("activity lifecycle","MainActivity onCreate invoked");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("activity lifecycle","onStart invoked");
+        Log.d("Main activity lifecycle","MainActivity onStart invoked");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("activity lifecycle","onResume invoked");
+        Log.d("Main activity lifecycle","MainActivity onResume invoked");
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("activity lifecycle","onPause invoked");
+        Log.d("Main activity lifecycle","MainActivity onPause invoked");
     }
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("activity lifecycle","onStop invoked");
+        Log.d("Main activity lifecycle","MainActivity onStop invoked");
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("activity lifecycle","onRestart invoked");
+        Log.d("Main activity lifecycle","MainActivity onRestart invoked");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("activity lifecycle","onDestroy invoked");
+        Log.d("Main activity lifecycle","MainActivity onDestroy invoked");
     }
 
     private void setListeners() {

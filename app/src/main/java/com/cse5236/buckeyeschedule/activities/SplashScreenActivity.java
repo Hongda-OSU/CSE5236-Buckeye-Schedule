@@ -50,32 +50,32 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }, Constants.SPLASH_SCREEN);
 
-        Log.d("activity lifecycle","onCreate invoked");
+        Log.d("activity lifecycle","SplashScreenActivity onCreate invoked");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("activity lifecycle","onResume invoked");
+        Log.d("activity lifecycle","SplashScreenActivity onResume invoked");
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("activity lifecycle","onPause invoked");
+        Log.d("activity lifecycle","SplashScreenActivity onPause invoked");
     }
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("activity lifecycle","onStop invoked");
+        Log.d("activity lifecycle","SplashScreenActivity onStop invoked");
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("activity lifecycle","onRestart invoked");
+        Log.d("activity lifecycle","SplashScreenActivity onRestart invoked");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("activity lifecycle","onDestroy invoked");
+        Log.d("activity lifecycle","SplashScreenActivity onDestroy invoked");
     }
 }

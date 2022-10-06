@@ -19,13 +19,13 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Toast.makeText(getActivity(), "Schedule Fragment", Toast.LENGTH_SHORT).show();
-        Log.d("fragment lifecycle","onCreateView invoked");
+        Log.d("fragment lifecycle","ScheduleFragment onCreateView invoked");
         return inflater.inflate(R.layout.fragment_schedule, container, false);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("fragment lifecycle","onDestroyView invoked");
+        Log.d("fragment lifecycle","ScheduleFragment onDestroyView invoked");
     }
 }

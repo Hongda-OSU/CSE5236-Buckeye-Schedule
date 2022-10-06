@@ -19,13 +19,13 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Toast.makeText(getActivity(), "Account Fragment", Toast.LENGTH_SHORT).show();
-        Log.d("fragment lifecycle","onCreateView invoked");
+        Log.d("fragment lifecycle","AccountFragment onCreateView invoked");
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("fragment lifecycle","onDestroyView invoked");
+        Log.d("fragment lifecycle","AccountFragment onDestroyView invoked");
     }
 }

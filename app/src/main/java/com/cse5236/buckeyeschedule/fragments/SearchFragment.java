@@ -19,13 +19,13 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Toast.makeText(getActivity(), "Search Fragment", Toast.LENGTH_SHORT).show();
-        Log.d("fragment lifecycle","onCreateView invoked");
+        Log.d("fragment lifecycle","SearchFragment onCreateView invoked");
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("fragment lifecycle","onDestroyView invoked");
+        Log.d("fragment lifecycle","SearchFragment onDestroyView invoked");
     }
 }
