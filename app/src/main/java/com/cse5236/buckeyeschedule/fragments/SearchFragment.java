@@ -11,14 +11,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
+import com.cse5236.buckeyeschedule.activities.MainActivity;
 
 public class SearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity)getActivity()).setTitle("Search");
         // Inflate the layout for this fragment
-        Toast.makeText(getActivity(), "Search Fragment", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getActivity(), "Search Fragment", Toast.LENGTH_SHORT).show();
         Log.d("fragment lifecycle","SearchFragment onCreateView invoked");
         return inflater.inflate(R.layout.fragment_search, container, false);
     }

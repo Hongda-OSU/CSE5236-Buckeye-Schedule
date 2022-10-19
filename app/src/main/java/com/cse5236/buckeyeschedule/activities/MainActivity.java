@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,15 +78,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
+        binding.imageProfile.setOnClickListener(v -> {
+            displayHelper(false);
+            replaceFragment(new AccountFragment(), "Account");
+        });
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.schedule:
+                    displayHelper(true);
                     replaceFragment(new ScheduleFragment(), "Schedule");
                     break;
                 case R.id.search:
+                    displayHelper(true);
                     replaceFragment(new SearchFragment(), "Search");
                     break;
                 case R.id.account:
+                    displayHelper(false);
                     replaceFragment(new AccountFragment(), "Account");
                     break;
             }
@@ -102,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadUserDetails() {
-        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
         byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         binding.imageProfile.setImageBitmap(bitmap);
@@ -127,5 +135,34 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 })
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
+    }
+
+    private void displayHelper(Boolean display) {
+        if (!display) {
+            binding.imageSignOut.setVisibility(View.INVISIBLE);
+            binding.imageProfile.setVisibility(View.INVISIBLE);
+        } else {
+            binding.imageSignOut.setVisibility(View.VISIBLE);
+            binding.imageProfile.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentByTag("Account");
+        if (f instanceof AccountFragment && f.isVisible()) {
+            binding.imageSignOut.setVisibility(View.VISIBLE);
+            binding.imageProfile.setVisibility(View.VISIBLE);
+        }
+        if(getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStack();
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    public void setTitle(String title) {
+        binding.textName.setText(title);
     }
 }
