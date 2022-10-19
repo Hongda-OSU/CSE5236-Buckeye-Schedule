@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cse5236.buckeyeschedule.R;
-import com.cse5236.buckeyeschedule.databinding.ActivityMainBinding;
 import com.cse5236.buckeyeschedule.databinding.ActivitySplashScreenBinding;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 
