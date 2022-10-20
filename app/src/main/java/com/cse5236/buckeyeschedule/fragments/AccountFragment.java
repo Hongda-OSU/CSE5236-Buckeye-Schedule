@@ -2,6 +2,7 @@ package com.cse5236.buckeyeschedule.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.activities.MainActivity;
+import com.cse5236.buckeyeschedule.activities.SignInActivity;
 import com.cse5236.buckeyeschedule.databinding.FragmentAccountBinding;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.utilities.PreferenceManager;
@@ -67,7 +69,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.passwordFragment.setOnClickListener(v -> {
+        binding.passwordShowFragment.setOnClickListener(v -> {
             if (binding.passwordFragment.getInputType() != InputType.TYPE_CLASS_TEXT) {
                 binding.passwordFragment.setInputType(InputType.TYPE_CLASS_TEXT );
             } else {
@@ -98,11 +100,23 @@ public class AccountFragment extends Fragment {
     }
 
     private void updateAccount() {
-
+        ((MainActivity)getActivity()).currentUser
+                .update(Constants.KEY_PASSWORD, binding.passwordFragment.getText().toString())
+                .addOnSuccessListener(unused -> {
+                    ((MainActivity)getActivity()).signOut();
+                })
+                .addOnFailureListener(e -> showToast("Unable to update password"));
     }
 
     private void deleteAccount() {
-
+        ((MainActivity)getActivity()).currentUser
+                .delete()
+                .addOnSuccessListener(unused -> {
+                    preferenceManager.clear();
+                    startActivity(new Intent(getActivity(), SignInActivity.class));
+                    getActivity().finish();
+                })
+                .addOnFailureListener(e -> showToast("Unable to delete account"));
     }
 
     private boolean isValidUpdatePassword() {
