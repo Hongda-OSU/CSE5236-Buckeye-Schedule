@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
+    public FirebaseFirestore database;
+    public DocumentReference currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        database = FirebaseFirestore.getInstance();
+        currentUser = database.collection(Constants.KEY_COLLECTION_USERS).document(preferenceManager.getString(Constants.KEY_USER_ID));
         replaceFragment(new ScheduleFragment(), "Schedule");
         loadUserDetails();
         setListeners();
@@ -115,15 +119,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void signOut() {
+    public void signOut() {
         showToast("Signing out...");
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference =
-                database.collection(Constants.KEY_COLLECTION_USERS).document(
-                        preferenceManager.getString(Constants.KEY_USER_ID)
-                );
         HashMap<String, Object> updates = new HashMap<>();
-        documentReference.update(updates)
+        currentUser.update(updates)
                 .addOnSuccessListener(unused -> {
                     preferenceManager.clear();
                     startActivity(new Intent(getApplicationContext(), SignInActivity.class));
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 
-    public void displayHelper(Boolean display) {
+    public void miniIconHelper(Boolean display) {
         if (!display) {
             binding.imageSignOut.setVisibility(View.INVISIBLE);
             binding.imageProfile.setVisibility(View.INVISIBLE);

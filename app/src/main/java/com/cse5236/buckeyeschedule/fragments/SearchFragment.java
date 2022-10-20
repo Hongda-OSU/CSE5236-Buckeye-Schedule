@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.activities.MainActivity;
@@ -19,7 +18,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setTitle("Search");
-        ((MainActivity)getActivity()).displayHelper(true);
+        ((MainActivity)getActivity()).miniIconHelper(true);
         // Inflate the layout for this fragment
         // Toast.makeText(getActivity(), "Search Fragment", Toast.LENGTH_SHORT).show();
         Log.d("fragment lifecycle","SearchFragment onCreateView invoked");
