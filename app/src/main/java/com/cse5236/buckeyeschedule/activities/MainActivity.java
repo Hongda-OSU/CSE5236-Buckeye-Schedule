@@ -78,21 +78,17 @@ public class MainActivity extends AppCompatActivity {
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.imageProfile.setOnClickListener(v -> {
-            displayHelper(false);
             replaceFragment(new AccountFragment(), "Account");
         });
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.schedule:
-                    displayHelper(true);
                     replaceFragment(new ScheduleFragment(), "Schedule");
                     break;
                 case R.id.search:
-                    displayHelper(true);
                     replaceFragment(new SearchFragment(), "Search");
                     break;
                 case R.id.account:
-                    displayHelper(false);
                     replaceFragment(new AccountFragment(), "Account");
                     break;
             }
@@ -136,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 
-    private void displayHelper(Boolean display) {
+    public void displayHelper(Boolean display) {
         if (!display) {
             binding.imageSignOut.setVisibility(View.INVISIBLE);
             binding.imageProfile.setVisibility(View.INVISIBLE);

@@ -19,6 +19,7 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setTitle("My Schedule");
+        ((MainActivity)getActivity()).displayHelper(true);
         // Inflate the layout for this fragment
         // Toast.makeText(getActivity(), "Schedule Fragment", Toast.LENGTH_SHORT).show();
         Log.d("fragment lifecycle","ScheduleFragment onCreateView invoked");

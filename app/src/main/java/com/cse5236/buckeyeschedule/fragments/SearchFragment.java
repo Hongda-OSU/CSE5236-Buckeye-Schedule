@@ -19,6 +19,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setTitle("Search");
+        ((MainActivity)getActivity()).displayHelper(true);
         // Inflate the layout for this fragment
         // Toast.makeText(getActivity(), "Search Fragment", Toast.LENGTH_SHORT).show();
         Log.d("fragment lifecycle","SearchFragment onCreateView invoked");

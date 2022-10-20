@@ -30,11 +30,11 @@ public class AccountFragment extends Fragment {
     private FirebaseFirestore database;
     private DocumentReference currentUser;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setTitle("Account Setting");
+        ((MainActivity)getActivity()).displayHelper(false);
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
         preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
