@@ -5,12 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScheduleFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Schedule Fragment"
-        android:textSize="26dp"
-        android:textColor="@color/black"
-        android:layout_gravity="center"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/scheduleRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_26sdp"
+            android:layout_marginTop="@dimen/_26sdp"
+            android:layout_marginEnd="@dimen/_26sdp"
+            android:layout_marginBottom="@dimen/_26sdp"
+            android:backgroundTint="@color/red"
+            android:src="@drawable/ic_baseline_add_24" />
+
+    </RelativeLayout>
 
 </FrameLayout>
