@@ -14,7 +14,7 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imageFragment"
-            android:layout_marginTop="@dimen/_80sdp"
+            android:layout_marginTop="@dimen/_32sdp"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:background="@drawable/background_image"
