@@ -18,4 +18,5 @@
     <string name="delete_account">Delete Account</string>
     <string name="update_password">Update Password</string>
     <string name="username">Username:</string>
+    <string name="schedule_title">Schedule Title</string>
 </resources>

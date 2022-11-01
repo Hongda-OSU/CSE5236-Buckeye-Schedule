@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment, String tag){
+    public void replaceFragment(Fragment fragment, String tag){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment, tag);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }

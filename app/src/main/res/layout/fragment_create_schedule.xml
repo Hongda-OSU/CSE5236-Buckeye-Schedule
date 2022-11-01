@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.CreateScheduleFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_10sdp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true">
+
+                <ImageView
+                    android:id="@+id/imageBack"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                    app:tint="@color/colorIcons"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageSave"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_baseline_done_24"
+                    app:tint="@color/colorIcons"
+                    android:background="@drawable/background_done_button"
+                    app:layout_constraintBottom_toBottomOf="@id/imageBack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imageBack" />
+
+                <EditText
+                    android:id="@+id/inputScheduleTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:hint="@string/schedule_title"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="@dimen/_16ssp"
+                    app:layout_constraintTop_toBottomOf="@id/imageBack" />
+
+                <TextView
+                    android:id="@+id/textDateTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintEnd_toEndOf="@id/inputScheduleTitle"
+                    app:layout_constraintStart_toStartOf="@id/inputScheduleTitle"
+                    app:layout_constraintTop_toBottomOf="@id/inputScheduleTitle" />
+
+                <EditText
+                    android:id="@+id/inputScheduleSubtitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:hint="Schedule Subtitle"
+                    android:imeOptions="actionDone"
+                    android:includeFontPadding="false"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:textColor="@color/colorTextSubtitle"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/viewSubtitleIndicator"
+                    app:layout_constraintTop_toBottomOf="@id/textDateTime" />
+
+                <View
+                    android:id="@+id/viewSubtitleIndicator"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:background="@drawable/background_subtitle"
+                    app:layout_constraintBottom_toBottomOf="@id/inputScheduleSubtitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/inputScheduleSubtitle" />
+
+                <EditText
+                    android:id="@+id/inputSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@null"
+                    android:fontFamily="@font/ubuntu"
+                    android:gravity="top"
+                    android:hint="Type your schedule here..."
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:minHeight="@dimen/_100sdp"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputScheduleSubtitle" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
