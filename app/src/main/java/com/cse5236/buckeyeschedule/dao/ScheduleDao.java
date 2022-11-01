@@ -15,6 +15,7 @@ import java.util.List;
 @Dao
 public interface ScheduleDao {
 
+    // note: LiveData
     @Query("SELECT * FROM Schedule_Database ORDER BY schedule_id DESC")
     LiveData<List<Schedule>> getAllSchedules();
 

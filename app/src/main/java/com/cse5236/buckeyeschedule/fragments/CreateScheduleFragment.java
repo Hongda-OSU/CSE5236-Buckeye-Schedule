@@ -21,7 +21,7 @@ public class CreateScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setTitle("Create Schedule");
-        ((MainActivity)getActivity()).miniIconHelper(true);
+        ((MainActivity)getActivity()).miniIconHelper(false);
         binding = FragmentCreateScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
         setListeners();
