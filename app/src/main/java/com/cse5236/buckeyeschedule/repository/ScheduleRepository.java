@@ -25,12 +25,13 @@ public class ScheduleRepository {
         scheduleDao.insertSchedule(schedule);
     }
 
-    public void deleteSchedule(Schedule schedule) {
-        scheduleDao.deleteSchedule(schedule);
+    public void deleteSchedule(int id) {
+        scheduleDao.deleteSchedule(id);
     }
 
     public void updateSchedule(Schedule schedule) {
         scheduleDao.updateSchedule(schedule);
     }
 
+    public void deleteAllSchedule() {scheduleDao.deleteAllSchedule();}
 }

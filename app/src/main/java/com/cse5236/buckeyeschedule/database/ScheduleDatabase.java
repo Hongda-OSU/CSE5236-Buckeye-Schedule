@@ -16,12 +16,12 @@ public abstract class ScheduleDatabase extends RoomDatabase {
 
     public static ScheduleDatabase scheduleDatabase;
 
-    public static synchronized ScheduleDatabase getDatabase(Context context) {
+    public static ScheduleDatabase getDatabase(Context context) {
 
         if (scheduleDatabase == null) {
             scheduleDatabase = Room.databaseBuilder(context,
                     ScheduleDatabase.class,
-                    "Schedule_Database").build();
+                    "Schedule_Database").allowMainThreadQueries().build();
         }
         return scheduleDatabase;
     }

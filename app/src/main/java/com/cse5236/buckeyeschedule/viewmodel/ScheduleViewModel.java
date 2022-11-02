@@ -22,15 +22,17 @@ public class ScheduleViewModel extends AndroidViewModel {
         getAllSchedules = repository.getAllSchedules;
     }
 
-    void insertSchedule(Schedule schedule) {
+    public void insertSchedule(Schedule schedule) {
         repository.insertSchedule(schedule);
     }
 
-    void updateSchedule(Schedule schedule) {
+    public void updateSchedule(Schedule schedule) {
         repository.updateSchedule(schedule);
     }
 
-    void deleteSchedule(Schedule schedule) {
-        repository.deleteSchedule(schedule);
+    public void deleteSchedule(int id) {
+        repository.deleteSchedule(id);
     }
+
+    public void deleteAllSchedule() {repository.deleteAllSchedule();}
 }

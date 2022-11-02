@@ -2,7 +2,6 @@ package com.cse5236.buckeyeschedule.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -28,6 +27,9 @@ public interface ScheduleDao {
     @Update
     void updateSchedule(Schedule schedule);
 
-    @Delete
-    void deleteSchedule(Schedule schedule);
+    @Query("Delete FROM Schedule_Database WHERE schedule_id= :scheduleId")
+    void deleteSchedule(int scheduleId);
+
+    @Query ("Delete FROM schedule_database")
+    void deleteAllSchedule();
 }

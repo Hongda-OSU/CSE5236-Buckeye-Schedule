@@ -40,7 +40,7 @@ public class AccountFragment extends Fragment {
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         builder = new AlertDialog.Builder(getActivity());
         View v = binding.getRoot();
-        preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
+        preferenceManager = ((MainActivity)getActivity()).preferenceManager;
         //Toast.makeText(getActivity(), "Account Fragment", Toast.LENGTH_SHORT).show();
         loadUserDetails();
         setListeners();

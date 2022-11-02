@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private PreferenceManager preferenceManager;
+    public PreferenceManager preferenceManager;
     public FirebaseFirestore database;
     public DocumentReference currentUser;
 
