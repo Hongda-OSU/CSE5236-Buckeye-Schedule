@@ -1,13 +1,25 @@
 package com.cse5236.buckeyeschedule.fragments;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +35,8 @@ import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -32,6 +46,9 @@ public class CreateScheduleFragment extends Fragment {
     private FragmentCreateScheduleBinding binding;
     private ScheduleViewModel scheduleViewModel;
     private String selectedNoteColor = "#333333";
+    private String selectedImagePath = "";
+    private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
+    private static final int REQUEST_CODE_SELECT_IMAGE = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +100,7 @@ public class CreateScheduleFragment extends Fragment {
         schedule.setUserId(((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID));
         // need change
         schedule.setCategory(selectedNoteColor);
+        schedule.setImagePath(selectedImagePath);
 
         scheduleViewModel.insertSchedule(schedule);
 
@@ -101,6 +119,53 @@ public class CreateScheduleFragment extends Fragment {
 //            }
 //        }
 //        new SaveScheduleTask().execute();
+    }
+
+    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), result -> {
+                if (result) {
+                        // PERMISSION GRANTED
+                        selectImage();
+                        showToast("1");
+                    } else {
+                        // PERMISSION NOT GRANTED
+                        showToast("Permission Denied!");
+                    }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            binding.imageSchedule.setImageBitmap(bitmap);
+                            binding.imageSchedule.setVisibility(View.VISIBLE);
+                            selectedImagePath = getPathFromURI(imageUri);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
+    private String getPathFromURI(Uri contentUri) {
+        String filePath;
+        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            filePath = contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            filePath = cursor.getString(index);
+            cursor.close();
+        }
+        return filePath;
     }
 
     private void initMiscellaneous() {
@@ -163,12 +228,30 @@ public class CreateScheduleFragment extends Fragment {
             setSubtitleIndicatorColor();
         });
 
+        binding.layoutMiscellaneous.layoutAddImage.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+            } else {
+                selectImage();
+            }
+        });
+
     }
 
     private void setSubtitleIndicatorColor() {
         GradientDrawable gradientDrawable = (GradientDrawable) binding.viewSubtitleIndicator.getBackground();
         gradientDrawable.setColor(Color.parseColor(selectedNoteColor));
     }
+
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        pickImage.launch(intent);
+    }
+
+
 
     @Override
     public void onDestroyView() {

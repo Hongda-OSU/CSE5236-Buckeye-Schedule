@@ -112,6 +112,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/inputScheduleSubtitle" />
 
+                <ImageView
+                    android:id="@+id/imageSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/app_name"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/inputScheduleSubtitle" />
+
+
                 <EditText
                     android:id="@+id/inputSchedule"
                     android:layout_width="match_parent"
@@ -131,7 +144,7 @@
                     android:textColorHint="@color/colorTextHint"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputScheduleSubtitle" />
+                    app:layout_constraintTop_toBottomOf="@id/imageSchedule" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

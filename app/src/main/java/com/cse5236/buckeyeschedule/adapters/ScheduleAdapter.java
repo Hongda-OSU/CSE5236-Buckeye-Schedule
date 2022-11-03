@@ -1,7 +1,10 @@
 package com.cse5236.buckeyeschedule.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.entities.Schedule;
 import com.cse5236.buckeyeschedule.fragments.ScheduleFragment;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -57,6 +61,7 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
 
         TextView textTitle, textSubtitle, textDateTime;
         LinearLayout layoutNote;
+        RoundedImageView imageSchedule;
 
         public ScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +69,7 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
             textSubtitle = itemView.findViewById(R.id.textSubtitle);
             textDateTime = itemView.findViewById(R.id.textDateTime);
             layoutNote = itemView.findViewById(R.id.layoutSchedule);
+            imageSchedule = itemView.findViewById(R.id.imageSchedule);
         }
 
         void setSchedule(Schedule schedule) {
@@ -79,6 +85,13 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
                 gradientDrawable.setColor(Color.parseColor(schedule.getCategory()));
             } else {
                 gradientDrawable.setColor(Color.parseColor("#333333"));
+            }
+
+            if (schedule.getImagePath() != null) {
+                imageSchedule.setImageBitmap(BitmapFactory.decodeFile(schedule.getImagePath()));
+                imageSchedule.setVisibility(View.VISIBLE);
+            } else {
+                imageSchedule.setVisibility(View.GONE);
             }
         }
     }
