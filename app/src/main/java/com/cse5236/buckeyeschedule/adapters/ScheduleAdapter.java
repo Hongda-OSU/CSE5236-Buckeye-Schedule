@@ -1,8 +1,11 @@
 package com.cse5236.buckeyeschedule.adapters;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,12 +56,14 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
     static class ScheduleViewHolder extends RecyclerView.ViewHolder {
 
         TextView textTitle, textSubtitle, textDateTime;
+        LinearLayout layoutNote;
 
         public ScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.titleText);
             textSubtitle = itemView.findViewById(R.id.textSubtitle);
             textDateTime = itemView.findViewById(R.id.textDateTime);
+            layoutNote = itemView.findViewById(R.id.layoutSchedule);
         }
 
         void setSchedule(Schedule schedule) {
@@ -69,6 +74,12 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
                 textSubtitle.setText(schedule.getScheduleSubtitle());
             }
             textDateTime.setText(schedule.getDateTime());
+            GradientDrawable gradientDrawable = (GradientDrawable) layoutNote.getBackground();
+            if (schedule.getCategory() != null) {
+                gradientDrawable.setColor(Color.parseColor(schedule.getCategory()));
+            } else {
+                gradientDrawable.setColor(Color.parseColor("#333333"));
+            }
         }
     }
 }
