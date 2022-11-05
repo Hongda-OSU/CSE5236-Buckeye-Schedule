@@ -2,15 +2,16 @@ package com.cse5236.buckeyeschedule.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,9 +22,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -49,6 +52,7 @@ public class CreateScheduleFragment extends Fragment {
     private String selectedImagePath = "";
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
+    private AlertDialog dialogAddURL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,6 +106,10 @@ public class CreateScheduleFragment extends Fragment {
         schedule.setCategory(selectedNoteColor);
         schedule.setImagePath(selectedImagePath);
 
+        if(binding.layoutWebURL.getVisibility() == View.VISIBLE) {
+            schedule.setWebLink(binding.textWebURL.getText().toString());
+        }
+
         scheduleViewModel.insertSchedule(schedule);
 
         ((MainActivity) getActivity()).replaceFragment(new ScheduleFragment(), "Schedule");
@@ -124,13 +132,12 @@ public class CreateScheduleFragment extends Fragment {
     private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(), result -> {
                 if (result) {
-                        // PERMISSION GRANTED
-                        selectImage();
-                        showToast("1");
-                    } else {
-                        // PERMISSION NOT GRANTED
-                        showToast("Permission Denied!");
-                    }
+                    // PERMISSION GRANTED
+                    selectImage();
+                } else {
+                    // PERMISSION NOT GRANTED
+                    showToast("Permission Denied!");
+                }
             }
     );
 
@@ -238,6 +245,11 @@ public class CreateScheduleFragment extends Fragment {
             }
         });
 
+        layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(v-> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            showAddURLDialog();
+        });
+
     }
 
     private void setSubtitleIndicatorColor() {
@@ -251,6 +263,37 @@ public class CreateScheduleFragment extends Fragment {
         pickImage.launch(intent);
     }
 
+    private void showAddURLDialog() {
+        if (dialogAddURL == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            View view = LayoutInflater.from(getActivity()).inflate(
+                    R.layout.layout_add_url,
+                    (ViewGroup) getActivity().findViewById(R.id.layoutAddUrlContainer)
+            );
+            builder.setView(view);
+            dialogAddURL = builder.create();
+            if (dialogAddURL.getWindow() != null) {
+                dialogAddURL.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            final EditText inputURL = view.findViewById(R.id.inputURL);
+            inputURL.requestFocus();
+            view.findViewById(R.id.textAdd).setOnClickListener(v -> {
+                if (inputURL.getText().toString().trim().isEmpty()) {
+                    showToast("Enter URL");
+                } else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString()).matches()) {
+                    showToast("Enter valid URL");
+                } else {
+                    binding.textWebURL.setText(inputURL.getText().toString());
+                    binding.layoutWebURL.setVisibility(View.VISIBLE);
+                    dialogAddURL.dismiss();
+                }
+            });
+            view.findViewById(R.id.textCancel).setOnClickListener(v -> {
+                dialogAddURL.dismiss();
+            });
+        }
+        dialogAddURL.show();
+    }
 
 
     @Override
