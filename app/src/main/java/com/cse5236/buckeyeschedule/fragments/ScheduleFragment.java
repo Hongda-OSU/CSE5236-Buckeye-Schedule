@@ -1,38 +1,31 @@
 package com.cse5236.buckeyeschedule.fragments;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.activities.MainActivity;
 import com.cse5236.buckeyeschedule.adapters.ScheduleAdapter;
-import com.cse5236.buckeyeschedule.database.ScheduleDatabase;
-import com.cse5236.buckeyeschedule.databinding.FragmentAccountBinding;
 import com.cse5236.buckeyeschedule.databinding.FragmentScheduleBinding;
 import com.cse5236.buckeyeschedule.entities.Schedule;
+import com.cse5236.buckeyeschedule.listeners.ScheduleListener;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ScheduleFragment extends Fragment {
+public class ScheduleFragment extends Fragment implements ScheduleListener {
 
     private FragmentScheduleBinding binding;
     private ScheduleViewModel scheduleViewModel;
     private ScheduleAdapter scheduleAdapter;
+    private int scheduleClickedPosition = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,13 +43,25 @@ public class ScheduleFragment extends Fragment {
             binding.scheduleRecyclerView.setLayoutManager(
                     new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             );
-            scheduleAdapter = new ScheduleAdapter(schedules);
+            scheduleAdapter = new ScheduleAdapter(schedules, this);
             binding.scheduleRecyclerView.setAdapter(scheduleAdapter);
             binding.scheduleRecyclerView.smoothScrollToPosition(0);
         });
         setListeners();
         Log.d("fragment lifecycle","ScheduleFragment onCreateView invoked");
         return v;
+    }
+
+    @Override
+    public void onScheduleClicked(Schedule schedule, int position) {
+        scheduleClickedPosition = position;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("isViewOrUpdate", true);
+        bundle.putSerializable("schedule", schedule);
+        CreateScheduleFragment createScheduleFragment = new CreateScheduleFragment();
+        createScheduleFragment.setArguments(bundle);
+        ((MainActivity)getActivity()).replaceFragment(createScheduleFragment, "View Schedule");
+
     }
 
     private void setListeners() {

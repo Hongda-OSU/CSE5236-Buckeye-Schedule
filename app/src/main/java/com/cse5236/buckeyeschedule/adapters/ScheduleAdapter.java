@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.entities.Schedule;
 import com.cse5236.buckeyeschedule.fragments.ScheduleFragment;
+import com.cse5236.buckeyeschedule.listeners.ScheduleListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
@@ -25,9 +26,11 @@ import java.util.List;
 public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>{
 
     private List<Schedule> schedules;
+    private ScheduleListener scheduleListener;
 
-    public ScheduleAdapter(List<Schedule> schedules) {
+    public ScheduleAdapter(List<Schedule> schedules, ScheduleListener scheduleListener) {
         this.schedules = schedules;
+        this.scheduleListener = scheduleListener;
     }
 
     @NonNull
@@ -45,6 +48,9 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
     @Override
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
         holder.setSchedule(schedules.get(position));
+        holder.layoutSchedule.setOnClickListener(v -> {
+            scheduleListener.onScheduleClicked(schedules.get(position), position);
+        });
     }
 
     @Override
@@ -60,7 +66,7 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
     static class ScheduleViewHolder extends RecyclerView.ViewHolder {
 
         TextView textTitle, textSubtitle, textDateTime;
-        LinearLayout layoutNote;
+        LinearLayout layoutSchedule;
         RoundedImageView imageSchedule;
 
         public ScheduleViewHolder(@NonNull View itemView) {
@@ -68,7 +74,7 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
             textTitle = itemView.findViewById(R.id.titleText);
             textSubtitle = itemView.findViewById(R.id.textSubtitle);
             textDateTime = itemView.findViewById(R.id.textDateTime);
-            layoutNote = itemView.findViewById(R.id.layoutSchedule);
+            layoutSchedule = itemView.findViewById(R.id.layoutSchedule);
             imageSchedule = itemView.findViewById(R.id.imageSchedule);
         }
 
@@ -80,7 +86,7 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
                 textSubtitle.setText(schedule.getScheduleSubtitle());
             }
             textDateTime.setText(schedule.getDateTime());
-            GradientDrawable gradientDrawable = (GradientDrawable) layoutNote.getBackground();
+            GradientDrawable gradientDrawable = (GradientDrawable) layoutSchedule.getBackground();
             if (schedule.getCategory() != null) {
                 gradientDrawable.setColor(Color.parseColor(schedule.getCategory()));
             } else {

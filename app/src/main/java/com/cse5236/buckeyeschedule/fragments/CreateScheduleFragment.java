@@ -50,9 +50,8 @@ public class CreateScheduleFragment extends Fragment {
     private ScheduleViewModel scheduleViewModel;
     private String selectedNoteColor = "#333333";
     private String selectedImagePath = "";
-    private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
-    private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private AlertDialog dialogAddURL;
+    private Schedule availableSchedule;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,8 +63,13 @@ public class CreateScheduleFragment extends Fragment {
         scheduleViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
         setTime();
         setListeners();
-        initMiscellaneous();
         setSubtitleIndicatorColor();
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            availableSchedule = (Schedule) bundle.getSerializable("schedule");
+            setViewOrUpdateSchedule();
+        }
+        initMiscellaneous();
         Log.d("fragment lifecycle", "CreateScheduleFragment onCreateView invoked");
         return v;
     }
@@ -82,6 +86,22 @@ public class CreateScheduleFragment extends Fragment {
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault())
                         .format(new Date())
         );
+    }
+
+    private void setViewOrUpdateSchedule() {
+        binding.inputScheduleTitle.setText(availableSchedule.getScheduleTitle());
+        binding.inputScheduleSubtitle.setText(availableSchedule.getScheduleSubtitle());
+        binding.inputSchedule.setText(availableSchedule.getScheduleDescription());
+        binding.textDateTime.setText(availableSchedule.getDateTime());
+        if (availableSchedule.getImagePath() != null && !availableSchedule.getImagePath().trim().isEmpty()) {
+            binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(availableSchedule.getImagePath()));
+            binding.imageSchedule.setVisibility(View.VISIBLE);
+            selectedImagePath = availableSchedule.getImagePath();
+        }
+        if (availableSchedule.getWebLink() != null && !availableSchedule.getWebLink().trim().isEmpty()) {
+            binding.textWebURL.setText(availableSchedule.getWebLink());
+            binding.textWebURL.setVisibility(View.VISIBLE);
+        }
     }
 
     private void saveSchedule() {
@@ -106,8 +126,13 @@ public class CreateScheduleFragment extends Fragment {
         schedule.setCategory(selectedNoteColor);
         schedule.setImagePath(selectedImagePath);
 
-        if(binding.layoutWebURL.getVisibility() == View.VISIBLE) {
+        if (binding.layoutWebURL.getVisibility() == View.VISIBLE) {
             schedule.setWebLink(binding.textWebURL.getText().toString());
+        }
+
+        if (availableSchedule != null) {
+            schedule.setScheduleId(availableSchedule.getScheduleId());
+            schedule.setUserId(availableSchedule.getUserId());
         }
 
         scheduleViewModel.insertSchedule(schedule);
@@ -245,10 +270,30 @@ public class CreateScheduleFragment extends Fragment {
             }
         });
 
-        layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(v-> {
+        layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             showAddURLDialog();
         });
+
+        if (availableSchedule !=null && availableSchedule.getCategory() !=null && !availableSchedule.getCategory().trim().isEmpty()) {
+            switch (availableSchedule.getCategory()) {
+                case "#FDBE3B":
+                    layoutMiscellaneous.findViewById(R.id.viewColor2).performClick();
+                    break;
+                case "#FF4842":
+                    layoutMiscellaneous.findViewById(R.id.viewColor3).performClick();
+                    break;
+                case "#3A52FC":
+                    layoutMiscellaneous.findViewById(R.id.viewColor4).performClick();
+                    break;
+                case "#000000":
+                    layoutMiscellaneous.findViewById(R.id.viewColor5).performClick();
+                    break;
+                default:
+                    layoutMiscellaneous.findViewById(R.id.viewColor1).performClick();
+                    break;
+            }
+        }
 
     }
 
