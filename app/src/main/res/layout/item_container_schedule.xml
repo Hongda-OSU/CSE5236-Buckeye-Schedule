@@ -40,7 +40,7 @@
         android:layout_marginBottom="@dimen/_4sdp"
         android:fontFamily="@font/ubuntu"
         android:includeFontPadding="false"
-        android:textColor="@color/colorNoteSubtitleText"
+        android:textColor="@color/colorScheduleSubtitleText"
         android:textSize="@dimen/_10ssp" />
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_marginBottom="@dimen/_8sdp"
         android:fontFamily="@font/ubuntu"
         android:includeFontPadding="false"
-        android:textColor="@color/colorNoteSubtitleText"
+        android:textColor="@color/colorScheduleSubtitleText"
         android:textSize="@dimen/_7ssp" />
 
 

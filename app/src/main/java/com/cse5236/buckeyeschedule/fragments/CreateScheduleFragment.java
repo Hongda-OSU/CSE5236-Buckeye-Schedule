@@ -38,6 +38,7 @@ import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -48,7 +49,7 @@ public class CreateScheduleFragment extends Fragment {
 
     private FragmentCreateScheduleBinding binding;
     private ScheduleViewModel scheduleViewModel;
-    private String selectedNoteColor = "#333333";
+    private String selectedScheduleColor = "#333333";
     private String selectedImagePath = "";
     private AlertDialog dialogAddURL;
     private Schedule availableSchedule;
@@ -79,6 +80,16 @@ public class CreateScheduleFragment extends Fragment {
             ((MainActivity) getActivity()).onBackPressed();
         });
         binding.imageSave.setOnClickListener(v -> saveSchedule());
+        binding.imageRemoveWebURL.setOnClickListener(v -> {
+            binding.textWebURL.setText(null);
+            binding.layoutWebURL.setVisibility(View.GONE);
+        });
+        binding.imageRemoveImage.setOnClickListener(v-> {
+            binding.imageSchedule.setImageBitmap(null);
+            binding.imageSchedule.setVisibility(View.GONE);
+            binding.imageRemoveImage.setVisibility(View.GONE);
+            selectedImagePath = "";
+        });
     }
 
     private void setTime() {
@@ -96,11 +107,13 @@ public class CreateScheduleFragment extends Fragment {
         if (availableSchedule.getImagePath() != null && !availableSchedule.getImagePath().trim().isEmpty()) {
             binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(availableSchedule.getImagePath()));
             binding.imageSchedule.setVisibility(View.VISIBLE);
+            binding.imageRemoveImage.setVisibility(View.VISIBLE);
             selectedImagePath = availableSchedule.getImagePath();
         }
         if (availableSchedule.getWebLink() != null && !availableSchedule.getWebLink().trim().isEmpty()) {
+            showToast(availableSchedule.getWebLink());
             binding.textWebURL.setText(availableSchedule.getWebLink());
-            binding.textWebURL.setVisibility(View.VISIBLE);
+            binding.layoutWebURL.setVisibility(View.VISIBLE);
         }
     }
 
@@ -123,7 +136,7 @@ public class CreateScheduleFragment extends Fragment {
         schedule.setDateTime(binding.textDateTime.getText().toString());
         schedule.setUserId(((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID));
         // need change
-        schedule.setCategory(selectedNoteColor);
+        schedule.setCategory(selectedScheduleColor);
         schedule.setImagePath(selectedImagePath);
 
         if (binding.layoutWebURL.getVisibility() == View.VISIBLE) {
@@ -178,6 +191,7 @@ public class CreateScheduleFragment extends Fragment {
                             binding.imageSchedule.setImageBitmap(bitmap);
                             binding.imageSchedule.setVisibility(View.VISIBLE);
                             selectedImagePath = getPathFromURI(imageUri);
+                            binding.imageRemoveImage.setVisibility(View.VISIBLE);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -211,7 +225,7 @@ public class CreateScheduleFragment extends Fragment {
             }
         });
         binding.layoutMiscellaneous.viewColor1.setOnClickListener(v -> {
-            selectedNoteColor = "#333333";
+            selectedScheduleColor = "#333333";
             binding.layoutMiscellaneous.imageColor1.setImageResource(R.drawable.ic_baseline_done_24);
             binding.layoutMiscellaneous.imageColor2.setImageResource(0);
             binding.layoutMiscellaneous.imageColor3.setImageResource(0);
@@ -221,7 +235,7 @@ public class CreateScheduleFragment extends Fragment {
         });
 
         binding.layoutMiscellaneous.viewColor2.setOnClickListener(v -> {
-            selectedNoteColor = "#FDBE3B";
+            selectedScheduleColor = "#FDBE3B";
             binding.layoutMiscellaneous.imageColor1.setImageResource(0);
             binding.layoutMiscellaneous.imageColor2.setImageResource(R.drawable.ic_baseline_done_24);
             binding.layoutMiscellaneous.imageColor3.setImageResource(0);
@@ -231,7 +245,7 @@ public class CreateScheduleFragment extends Fragment {
         });
 
         binding.layoutMiscellaneous.viewColor3.setOnClickListener(v -> {
-            selectedNoteColor = "#FF4842";
+            selectedScheduleColor = "#FF4842";
             binding.layoutMiscellaneous.imageColor1.setImageResource(0);
             binding.layoutMiscellaneous.imageColor2.setImageResource(0);
             binding.layoutMiscellaneous.imageColor3.setImageResource(R.drawable.ic_baseline_done_24);
@@ -241,7 +255,7 @@ public class CreateScheduleFragment extends Fragment {
         });
 
         binding.layoutMiscellaneous.viewColor4.setOnClickListener(v -> {
-            selectedNoteColor = "#3A52FC";
+            selectedScheduleColor = "#3A52FC";
             binding.layoutMiscellaneous.imageColor1.setImageResource(0);
             binding.layoutMiscellaneous.imageColor2.setImageResource(0);
             binding.layoutMiscellaneous.imageColor3.setImageResource(0);
@@ -251,7 +265,7 @@ public class CreateScheduleFragment extends Fragment {
         });
 
         binding.layoutMiscellaneous.viewColor5.setOnClickListener(v -> {
-            selectedNoteColor = "#000000";
+            selectedScheduleColor = "#000000";
             binding.layoutMiscellaneous.imageColor1.setImageResource(0);
             binding.layoutMiscellaneous.imageColor2.setImageResource(0);
             binding.layoutMiscellaneous.imageColor3.setImageResource(0);
@@ -270,7 +284,7 @@ public class CreateScheduleFragment extends Fragment {
             }
         });
 
-        layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(v -> {
+        binding.layoutMiscellaneous.layoutAddUrl.setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             showAddURLDialog();
         });
@@ -299,7 +313,7 @@ public class CreateScheduleFragment extends Fragment {
 
     private void setSubtitleIndicatorColor() {
         GradientDrawable gradientDrawable = (GradientDrawable) binding.viewSubtitleIndicator.getBackground();
-        gradientDrawable.setColor(Color.parseColor(selectedNoteColor));
+        gradientDrawable.setColor(Color.parseColor(selectedScheduleColor));
     }
 
     private void selectImage() {

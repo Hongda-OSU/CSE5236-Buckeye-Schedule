@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval" >
-            <stroke android:width="@dimen/_2sdp" android:color="@color/colorNoteColor3" />
+            <stroke android:width="@dimen/_2sdp" android:color="@color/colorScheduleColor3" />
         </shape>
     </item>
     <item
@@ -21,7 +21,7 @@
         android:right="@dimen/_6sdp"
         android:top="@dimen/_6sdp">
         <shape android:shape="oval">
-            <solid android:color="@color/colorNoteColor3" />
+            <solid android:color="@color/colorScheduleColor3" />
         </shape>
     </item>
 </layer-list>
