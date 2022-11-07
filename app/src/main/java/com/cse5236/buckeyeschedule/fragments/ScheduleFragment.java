@@ -1,6 +1,5 @@
 package com.cse5236.buckeyeschedule.fragments;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -25,7 +24,6 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     private FragmentScheduleBinding binding;
     private ScheduleViewModel scheduleViewModel;
     private ScheduleAdapter scheduleAdapter;
-    private int scheduleClickedPosition = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +52,6 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
 
     @Override
     public void onScheduleClicked(Schedule schedule, int position) {
-        scheduleClickedPosition = position;
         Bundle bundle = new Bundle();
         bundle.putSerializable("isViewOrUpdate", true);
         bundle.putSerializable("schedule", schedule);

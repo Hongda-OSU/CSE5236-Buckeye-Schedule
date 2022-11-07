@@ -84,7 +84,7 @@ public class CreateScheduleFragment extends Fragment {
             binding.textWebURL.setText(null);
             binding.layoutWebURL.setVisibility(View.GONE);
         });
-        binding.imageRemoveImage.setOnClickListener(v-> {
+        binding.imageRemoveImage.setOnClickListener(v -> {
             binding.imageSchedule.setImageBitmap(null);
             binding.imageSchedule.setVisibility(View.GONE);
             binding.imageRemoveImage.setVisibility(View.GONE);
@@ -111,7 +111,6 @@ public class CreateScheduleFragment extends Fragment {
             selectedImagePath = availableSchedule.getImagePath();
         }
         if (availableSchedule.getWebLink() != null && !availableSchedule.getWebLink().trim().isEmpty()) {
-            showToast(availableSchedule.getWebLink());
             binding.textWebURL.setText(availableSchedule.getWebLink());
             binding.layoutWebURL.setVisibility(View.VISIBLE);
         }
@@ -165,53 +164,6 @@ public class CreateScheduleFragment extends Fragment {
 //            }
 //        }
 //        new SaveScheduleTask().execute();
-    }
-
-    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
-            new ActivityResultContracts.RequestPermission(), result -> {
-                if (result) {
-                    // PERMISSION GRANTED
-                    selectImage();
-                } else {
-                    // PERMISSION NOT GRANTED
-                    showToast("Permission Denied!");
-                }
-            }
-    );
-
-    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    if (result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        try {
-                            InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                            binding.imageSchedule.setImageBitmap(bitmap);
-                            binding.imageSchedule.setVisibility(View.VISIBLE);
-                            selectedImagePath = getPathFromURI(imageUri);
-                            binding.imageRemoveImage.setVisibility(View.VISIBLE);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-    );
-
-    private String getPathFromURI(Uri contentUri) {
-        String filePath;
-        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(contentUri, null, null, null, null);
-        if (cursor == null) {
-            filePath = contentUri.getPath();
-        } else {
-            cursor.moveToFirst();
-            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            filePath = cursor.getString(index);
-            cursor.close();
-        }
-        return filePath;
     }
 
     private void initMiscellaneous() {
@@ -289,7 +241,7 @@ public class CreateScheduleFragment extends Fragment {
             showAddURLDialog();
         });
 
-        if (availableSchedule !=null && availableSchedule.getCategory() !=null && !availableSchedule.getCategory().trim().isEmpty()) {
+        if (availableSchedule != null && availableSchedule.getCategory() != null && !availableSchedule.getCategory().trim().isEmpty()) {
             switch (availableSchedule.getCategory()) {
                 case "#FDBE3B":
                     layoutMiscellaneous.findViewById(R.id.viewColor2).performClick();
@@ -321,6 +273,74 @@ public class CreateScheduleFragment extends Fragment {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         pickImage.launch(intent);
     }
+
+    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), result -> {
+                if (result) {
+                    // PERMISSION GRANTED
+                    selectImage();
+                } else {
+                    // PERMISSION NOT GRANTED
+                    showToast("Permission Denied!");
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            binding.imageSchedule.setImageBitmap(bitmap);
+                            binding.imageSchedule.setVisibility(View.VISIBLE);
+                            selectedImagePath = getPathFromURI(imageUri);
+                            binding.imageRemoveImage.setVisibility(View.VISIBLE);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
+    private String getPathFromURI(Uri contentUri) {
+        String filePath;
+        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            filePath = contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            filePath = cursor.getString(index);
+            cursor.close();
+        }
+        return filePath;
+    }
+
+    private void getLatestImagePath() {
+        String filePath;
+        String[] projection = new String[]{
+                MediaStore.Images.ImageColumns._ID,
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.ImageColumns.DATE_TAKEN,
+                MediaStore.Images.ImageColumns.MIME_TYPE
+        };
+        Cursor cursor = getContext().getContentResolver()
+                .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+                        null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+
+        cursor.moveToFirst();
+        filePath = cursor.getString(1);
+        // Bitmap bm = BitmapFactory.decodeFile(filePath);
+        // binding.imageSchedule.setImageBitmap(bm);
+        selectedImagePath = filePath;
+    }
+
 
     private void showAddURLDialog() {
         if (dialogAddURL == null) {

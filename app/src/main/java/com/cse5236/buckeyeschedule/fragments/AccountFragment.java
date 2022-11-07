@@ -1,7 +1,6 @@
 package com.cse5236.buckeyeschedule.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,7 +28,6 @@ public class AccountFragment extends Fragment {
     private FragmentAccountBinding binding;
     private PreferenceManager preferenceManager;
     private DocumentSnapshot documentSnapshot;
-    private AlertDialog dialog;
     private AlertDialog.Builder builder;
 
     @Override
