@@ -15,8 +15,8 @@ import java.util.List;
 public interface ScheduleDao {
 
     // note: LiveData
-    @Query("SELECT * FROM Schedule_Database ORDER BY schedule_id DESC")
-    LiveData<List<Schedule>> getAllSchedules();
+    @Query("SELECT * FROM Schedule_Database WHERE user_id= :userId ORDER BY schedule_id DESC")
+    LiveData<List<Schedule>> getAllSchedules(String userId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSchedule(Schedule schedule);

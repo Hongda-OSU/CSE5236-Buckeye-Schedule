@@ -15,10 +15,10 @@ public class ScheduleRepository {
     public ScheduleDao scheduleDao;
     public LiveData<List<Schedule>> getAllSchedules;
 
-    public ScheduleRepository(Application application) {
+    public ScheduleRepository(Application application, String userId) {
         ScheduleDatabase database = ScheduleDatabase.getDatabase(application);
         scheduleDao = database.scheduleDao();
-        getAllSchedules = scheduleDao.getAllSchedules();
+        getAllSchedules = scheduleDao.getAllSchedules(userId);
     }
 
     public void insertSchedule(Schedule schedule) {

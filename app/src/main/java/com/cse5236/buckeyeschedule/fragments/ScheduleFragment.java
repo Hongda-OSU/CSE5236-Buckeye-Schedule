@@ -19,7 +19,9 @@ import com.cse5236.buckeyeschedule.activities.MainActivity;
 import com.cse5236.buckeyeschedule.adapters.ScheduleAdapter;
 import com.cse5236.buckeyeschedule.databinding.FragmentScheduleBinding;
 import com.cse5236.buckeyeschedule.entities.Schedule;
+import com.cse5236.buckeyeschedule.factory.ScheduleViewModelFactory;
 import com.cse5236.buckeyeschedule.listeners.ScheduleListener;
+import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 
 public class ScheduleFragment extends Fragment implements ScheduleListener {
@@ -31,11 +33,11 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity)getActivity()).setTitle("My Schedule");
-        ((MainActivity)getActivity()).miniIconHelper(true);
+        ((MainActivity) getActivity()).setTitle("My Schedule");
+        ((MainActivity) getActivity()).miniIconHelper(true);
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
-        scheduleViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
+        scheduleViewModel = ViewModelProviders.of(this, new ScheduleViewModelFactory(this.getActivity().getApplication(), ((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID))).get(ScheduleViewModel.class);
 
         //scheduleViewModel.deleteAllSchedule();
         // showToast(Integer.toString(scheduleViewModel.getCountVM()));
@@ -50,7 +52,7 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
             binding.scheduleRecyclerView.smoothScrollToPosition(0);
         });
         setListeners();
-        Log.d("fragment lifecycle","ScheduleFragment onCreateView invoked");
+        Log.d("fragment lifecycle", "ScheduleFragment onCreateView invoked");
         return v;
     }
 
@@ -61,13 +63,13 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
         bundle.putSerializable("schedule", schedule);
         CreateScheduleFragment createScheduleFragment = new CreateScheduleFragment();
         createScheduleFragment.setArguments(bundle);
-        ((MainActivity)getActivity()).replaceFragment(createScheduleFragment, "View Schedule");
+        ((MainActivity) getActivity()).replaceFragment(createScheduleFragment, "View Schedule");
 
     }
 
     private void setListeners() {
         binding.imageAddScheduleButton.setOnClickListener(v -> {
-            ((MainActivity)getActivity()).replaceFragment(new CreateScheduleFragment(), "Create Schedule");
+            ((MainActivity) getActivity()).replaceFragment(new CreateScheduleFragment(), "Create Schedule");
         });
         binding.inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,7 +111,7 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("fragment lifecycle","ScheduleFragment onDestroyView invoked");
+        Log.d("fragment lifecycle", "ScheduleFragment onDestroyView invoked");
     }
 
     private void showToast(String message) {

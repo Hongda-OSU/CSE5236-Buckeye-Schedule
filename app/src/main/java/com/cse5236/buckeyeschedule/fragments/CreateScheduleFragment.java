@@ -34,6 +34,7 @@ import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.activities.MainActivity;
 import com.cse5236.buckeyeschedule.databinding.FragmentCreateScheduleBinding;
 import com.cse5236.buckeyeschedule.entities.Schedule;
+import com.cse5236.buckeyeschedule.factory.ScheduleViewModelFactory;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -61,7 +62,7 @@ public class CreateScheduleFragment extends Fragment {
         ((MainActivity) getActivity()).miniIconHelper(false);
         binding = FragmentCreateScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
-        scheduleViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
+        scheduleViewModel = ViewModelProviders.of(this, new ScheduleViewModelFactory(this.getActivity().getApplication(), ((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID))).get(ScheduleViewModel.class);
         setTime();
         setListeners();
         setSubtitleIndicatorColor();
