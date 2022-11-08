@@ -15,7 +15,7 @@ public class ScheduleRepository {
     public ScheduleDao scheduleDao;
     public LiveData<List<Schedule>> getAllSchedules;
 
-    public ScheduleRepository(Application application, String userId) {
+    public ScheduleRepository(Application application, final String userId) {
         ScheduleDatabase database = ScheduleDatabase.getDatabase(application);
         scheduleDao = database.scheduleDao();
         getAllSchedules = scheduleDao.getAllSchedules(userId);

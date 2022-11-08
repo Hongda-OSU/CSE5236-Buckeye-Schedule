@@ -37,7 +37,8 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
         ((MainActivity) getActivity()).miniIconHelper(true);
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
-        scheduleViewModel = ViewModelProviders.of(this, new ScheduleViewModelFactory(this.getActivity().getApplication(), ((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID))).get(ScheduleViewModel.class);
+        scheduleViewModel = ViewModelProviders.of(this, new ScheduleViewModelFactory(this.getActivity().getApplication(),
+                ((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID))).get(ScheduleViewModel.class);
 
         //scheduleViewModel.deleteAllSchedule();
         // showToast(Integer.toString(scheduleViewModel.getCountVM()));

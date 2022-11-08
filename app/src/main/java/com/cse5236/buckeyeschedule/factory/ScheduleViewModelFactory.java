@@ -12,7 +12,7 @@ public class ScheduleViewModelFactory implements ViewModelProvider.Factory {
     private String userId;
 
 
-    public ScheduleViewModelFactory(Application application, String userId) {
+    public ScheduleViewModelFactory(Application application, final String userId) {
         this.mApplication = application;
         this.userId = userId;
     }

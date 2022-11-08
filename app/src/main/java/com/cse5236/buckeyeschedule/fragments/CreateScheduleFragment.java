@@ -62,7 +62,8 @@ public class CreateScheduleFragment extends Fragment {
         ((MainActivity) getActivity()).miniIconHelper(false);
         binding = FragmentCreateScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
-        scheduleViewModel = ViewModelProviders.of(this, new ScheduleViewModelFactory(this.getActivity().getApplication(), ((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID))).get(ScheduleViewModel.class);
+        scheduleViewModel = ViewModelProviders.of(this, new ScheduleViewModelFactory(this.getActivity().getApplication(),
+                ((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_USER_ID))).get(ScheduleViewModel.class);
         setTime();
         setListeners();
         setSubtitleIndicatorColor();
@@ -70,6 +71,7 @@ public class CreateScheduleFragment extends Fragment {
         if (bundle != null) {
             availableSchedule = (Schedule) bundle.getSerializable("schedule");
             if (availableSchedule != null) {
+                ((MainActivity) getActivity()).setTitle("View Schedule");
                 setViewOrUpdateSchedule();
             } else {
                 setLatestImageSchedule();

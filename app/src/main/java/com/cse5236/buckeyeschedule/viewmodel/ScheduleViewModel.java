@@ -15,7 +15,7 @@ public class ScheduleViewModel extends AndroidViewModel {
     public ScheduleRepository repository;
     public LiveData<List<Schedule>> getAllSchedules;
 
-    public ScheduleViewModel(Application application, String userId) {
+    public ScheduleViewModel(Application application, final String userId) {
         super(application);
 
         repository = new ScheduleRepository(application, userId);
