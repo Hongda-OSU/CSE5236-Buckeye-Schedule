@@ -38,7 +38,6 @@ import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -52,6 +51,7 @@ public class CreateScheduleFragment extends Fragment {
     private String selectedScheduleColor = "#333333";
     private String selectedImagePath = "";
     private AlertDialog dialogAddURL;
+    private AlertDialog dialogDeleteSchedule;
     private Schedule availableSchedule;
 
     @Override
@@ -68,7 +68,11 @@ public class CreateScheduleFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             availableSchedule = (Schedule) bundle.getSerializable("schedule");
-            setViewOrUpdateSchedule();
+            if (availableSchedule != null) {
+                setViewOrUpdateSchedule();
+            } else {
+                setLatestImageSchedule();
+            }
         }
         initMiscellaneous();
         Log.d("fragment lifecycle", "CreateScheduleFragment onCreateView invoked");
@@ -241,6 +245,14 @@ public class CreateScheduleFragment extends Fragment {
             showAddURLDialog();
         });
 
+        if (availableSchedule != null) {
+            layoutMiscellaneous.findViewById(R.id.layoutDeleteSchedule).setVisibility(View.VISIBLE);
+            layoutMiscellaneous.findViewById(R.id.layoutDeleteSchedule).setOnClickListener(v -> {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showDeleteScheduleDialog();
+            });
+        }
+
         if (availableSchedule != null && availableSchedule.getCategory() != null && !availableSchedule.getCategory().trim().isEmpty()) {
             switch (availableSchedule.getCategory()) {
                 case "#FDBE3B":
@@ -260,7 +272,30 @@ public class CreateScheduleFragment extends Fragment {
                     break;
             }
         }
+    }
 
+    private void showDeleteScheduleDialog() {
+        if (dialogDeleteSchedule == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            View view = LayoutInflater.from(getActivity()).inflate(
+                    R.layout.layout_delete_schedule,
+                    (ViewGroup) getActivity().findViewById(R.id.layoutDeleteScheduleContainer)
+            );
+            builder.setView(view);
+            dialogDeleteSchedule = builder.create();
+            if (dialogDeleteSchedule.getWindow() != null) {
+                dialogDeleteSchedule.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            view.findViewById(R.id.textDeleteSchedule).setOnClickListener(v -> {
+                scheduleViewModel.deleteSchedule(availableSchedule.getScheduleId());
+                ((MainActivity) getActivity()).replaceFragment(new ScheduleFragment(), "Schedule");
+                dialogDeleteSchedule.dismiss();
+            });
+            view.findViewById(R.id.textCancel).setOnClickListener(v -> {
+                dialogDeleteSchedule.dismiss();
+            });
+        }
+        dialogDeleteSchedule.show();
     }
 
     private void setSubtitleIndicatorColor() {
@@ -321,7 +356,7 @@ public class CreateScheduleFragment extends Fragment {
         return filePath;
     }
 
-    private void getLatestImagePath() {
+    private void setLatestImageSchedule() {
         String filePath;
         String[] projection = new String[]{
                 MediaStore.Images.ImageColumns._ID,
