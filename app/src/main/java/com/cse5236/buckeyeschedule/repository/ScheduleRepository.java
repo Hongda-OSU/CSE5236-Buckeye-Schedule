@@ -33,5 +33,15 @@ public class ScheduleRepository {
         scheduleDao.updateSchedule(schedule);
     }
 
-    public void deleteAllSchedule() {scheduleDao.deleteAllSchedule();}
+    public void deleteAllSchedule() {
+        scheduleDao.deleteAllSchedule();
+    }
+
+    public LiveData<Integer> getCount() {
+        return scheduleDao.getCount();
+    }
+
+    public int getCountDAO() {
+        return scheduleDao.getRowCount();
+    }
 }

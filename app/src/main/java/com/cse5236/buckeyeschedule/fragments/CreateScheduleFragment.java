@@ -288,8 +288,8 @@ public class CreateScheduleFragment extends Fragment {
             }
             view.findViewById(R.id.textDeleteSchedule).setOnClickListener(v -> {
                 scheduleViewModel.deleteSchedule(availableSchedule.getScheduleId());
-                ((MainActivity) getActivity()).replaceFragment(new ScheduleFragment(), "Schedule");
                 dialogDeleteSchedule.dismiss();
+                ((MainActivity) getActivity()).replaceFragment(new ScheduleFragment(), "Schedule");
             });
             view.findViewById(R.id.textCancel).setOnClickListener(v -> {
                 dialogDeleteSchedule.dismiss();

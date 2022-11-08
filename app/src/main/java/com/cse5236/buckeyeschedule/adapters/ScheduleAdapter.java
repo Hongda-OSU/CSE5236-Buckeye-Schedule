@@ -1,10 +1,10 @@
 package com.cse5236.buckeyeschedule.adapters;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +16,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.entities.Schedule;
-import com.cse5236.buckeyeschedule.fragments.ScheduleFragment;
 import com.cse5236.buckeyeschedule.listeners.ScheduleListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>{
+public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 
     private List<Schedule> schedules;
+    private List<Schedule> scheduleSource;
     private ScheduleListener scheduleListener;
+    private Timer timer;
 
     public ScheduleAdapter(List<Schedule> schedules, ScheduleListener scheduleListener) {
         this.schedules = schedules;
+        scheduleSource = schedules;
         this.scheduleListener = scheduleListener;
     }
 
@@ -80,7 +85,7 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
 
         void setSchedule(Schedule schedule) {
             textTitle.setText(schedule.getScheduleTitle());
-            if(schedule.getScheduleSubtitle().trim().isEmpty()) {
+            if (schedule.getScheduleSubtitle().trim().isEmpty()) {
                 textSubtitle.setVisibility(View.GONE);
             } else {
                 textSubtitle.setText(schedule.getScheduleSubtitle());
@@ -99,6 +104,40 @@ public class ScheduleAdapter extends  RecyclerView.Adapter<ScheduleAdapter.Sched
             } else {
                 imageSchedule.setVisibility(View.GONE);
             }
+        }
+    }
+
+    public void searchSchedule(final String searchKeyword) {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (searchKeyword.trim().isEmpty()) {
+                    schedules = scheduleSource;
+                } else {
+                    ArrayList<Schedule> s = new ArrayList<>();
+                    for (Schedule schedule : scheduleSource) {
+                        if (schedule.getScheduleTitle().toLowerCase().contains(searchKeyword.toLowerCase()) ||
+                                schedule.getScheduleSubtitle().toLowerCase().contains(searchKeyword.toLowerCase()) ||
+                                schedule.getScheduleDescription().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                            s.add(schedule);
+                        }
+                    }
+                    schedules = s;
+                }
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        }, 500);
+    }
+
+    public void cancelTimer() {
+        if (timer != null) {
+            timer.cancel();
         }
     }
 }

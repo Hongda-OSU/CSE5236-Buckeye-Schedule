@@ -32,4 +32,10 @@ public interface ScheduleDao {
 
     @Query ("Delete FROM schedule_database")
     void deleteAllSchedule();
+
+    @Query("SELECT COUNT(*) FROM Schedule_Database")
+    LiveData<Integer> getCount();
+
+    @Query("SELECT COUNT(*) FROM Schedule_Database")
+    int getRowCount();
 }

@@ -34,5 +34,16 @@ public class ScheduleViewModel extends AndroidViewModel {
         repository.deleteSchedule(id);
     }
 
-    public void deleteAllSchedule() {repository.deleteAllSchedule();}
+    public void deleteAllSchedule() {
+        repository.deleteAllSchedule();
+    }
+
+    public LiveData<Integer> getCount() {
+        return repository.getCount();
+    }
+
+    public int getCountVM() {
+        return repository.getCountDAO();
+    }
+
 }

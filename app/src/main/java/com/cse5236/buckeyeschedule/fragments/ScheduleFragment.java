@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.activities.MainActivity;
 import com.cse5236.buckeyeschedule.adapters.ScheduleAdapter;
@@ -35,6 +38,7 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
         scheduleViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
 
         //scheduleViewModel.deleteAllSchedule();
+        // showToast(Integer.toString(scheduleViewModel.getCountVM()));
 
         // -> is same as onChange overrides
         scheduleViewModel.getAllSchedules.observe(getViewLifecycleOwner(), schedules -> {
@@ -65,6 +69,24 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
         binding.imageAddScheduleButton.setOnClickListener(v -> {
             ((MainActivity)getActivity()).replaceFragment(new CreateScheduleFragment(), "Create Schedule");
         });
+        binding.inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                scheduleAdapter.cancelTimer();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (scheduleViewModel.getCountVM() != 0) {
+                    scheduleAdapter.searchSchedule(s.toString());
+                }
+            }
+        });
     }
 
 //    private void getSchedules() {
@@ -88,5 +110,9 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     public void onDestroyView() {
         super.onDestroyView();
         Log.d("fragment lifecycle","ScheduleFragment onDestroyView invoked");
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
