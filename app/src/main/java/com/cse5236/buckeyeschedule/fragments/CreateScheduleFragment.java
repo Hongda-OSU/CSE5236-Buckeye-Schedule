@@ -70,11 +70,20 @@ public class CreateScheduleFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             availableSchedule = (Schedule) bundle.getSerializable("schedule");
+            selectedImagePath = (String) bundle.getSerializable("imagePath");
+            String url = (String) bundle.getSerializable("URL");
             if (availableSchedule != null) {
                 ((MainActivity) getActivity()).setTitle("View Schedule");
                 setViewOrUpdateSchedule();
-            } else {
-                setLatestImageSchedule();
+            }
+            if (selectedImagePath != null) {
+                binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                binding.imageSchedule.setVisibility(View.VISIBLE);
+                binding.imageRemoveImage.setVisibility(View.VISIBLE);
+            }
+            if (url != null) {
+                binding.textWebURL.setText(url);
+                binding.layoutWebURL.setVisibility(View.VISIBLE);
             }
         }
         initMiscellaneous();
