@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -163,18 +164,39 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
 
     private void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        takePhotoLauncher.launch(intent);
+        // Create the File where the photo should go
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            showToast("Cannot create image file.");
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(getActivity().getApplicationContext(),
+                    "com.cse5236.buckeyeschedule.fileprovider",
+                    photoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            takePhotoLauncher.launch(intent);
+        }
     }
 
-//    private File createImageFile() throws IOException {
-//        String timeStamp = new SimpleDateFormat("yyyyMMDD_HHmmss").format(new Date());
-//        String imageFileName = "Image_" + timeStamp + "_";
-//        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-//        latestImageTaken = image.getAbsolutePath();
-//        return image;
-//    }
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMDD_HHmmss").format(new Date());
+        String imageFileName = "Image_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        latestImageTaken = image.getAbsolutePath();
+        return image;
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(latestImageTaken);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getActivity().sendBroadcast(mediaScanIntent);
+    }
 
     private ActivityResultLauncher<String> requestPhotoPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(), result -> {
@@ -195,8 +217,6 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
                     if (result.getData() != null) {
                         Uri imageUri = result.getData().getData();
                         try {
-                            InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             String selectedImagePath = getPathFromURI(imageUri);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("imagePath", selectedImagePath);
@@ -225,9 +245,10 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
+                    galleryAddPic();
                     if (result.getData() != null) {
                         try {
-                            latestImageTaken = getLatestImageTaken();
+                            //latestImageTaken = getLatestImageTaken();
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("latestImageTaken", latestImageTaken);
                             CreateScheduleFragment createScheduleFragment = new CreateScheduleFragment();

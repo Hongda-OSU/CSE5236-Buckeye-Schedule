@@ -87,6 +87,7 @@ public class CreateScheduleFragment extends Fragment {
                 binding.layoutWebURL.setVisibility(View.VISIBLE);
             }
             if (latestImageTaken != null) {
+                selectedImagePath = latestImageTaken;
                 binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(latestImageTaken));
                 binding.imageSchedule.setVisibility(View.VISIBLE);
                 binding.imageRemoveImage.setVisibility(View.VISIBLE);
@@ -127,6 +128,7 @@ public class CreateScheduleFragment extends Fragment {
         binding.inputSchedule.setText(availableSchedule.getScheduleDescription());
         binding.textDateTime.setText(availableSchedule.getDateTime());
         if (availableSchedule.getImagePath() != null && !availableSchedule.getImagePath().trim().isEmpty()) {
+            //Log.d("ImagePath", availableSchedule.getImagePath());
             binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(availableSchedule.getImagePath()));
             binding.imageSchedule.setVisibility(View.VISIBLE);
             binding.imageRemoveImage.setVisibility(View.VISIBLE);
