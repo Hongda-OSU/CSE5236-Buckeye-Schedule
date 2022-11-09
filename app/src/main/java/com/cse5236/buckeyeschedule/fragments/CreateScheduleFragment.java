@@ -71,6 +71,7 @@ public class CreateScheduleFragment extends Fragment {
         if (bundle != null) {
             availableSchedule = (Schedule) bundle.getSerializable("schedule");
             selectedImagePath = (String) bundle.getSerializable("imagePath");
+            String latestImageTaken = (String) bundle.getSerializable("latestImageTaken");
             String url = (String) bundle.getSerializable("URL");
             if (availableSchedule != null) {
                 ((MainActivity) getActivity()).setTitle("View Schedule");
@@ -84,6 +85,11 @@ public class CreateScheduleFragment extends Fragment {
             if (url != null) {
                 binding.textWebURL.setText(url);
                 binding.layoutWebURL.setVisibility(View.VISIBLE);
+            }
+            if (latestImageTaken != null) {
+                binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(latestImageTaken));
+                binding.imageSchedule.setVisibility(View.VISIBLE);
+                binding.imageRemoveImage.setVisibility(View.VISIBLE);
             }
         }
         initMiscellaneous();
@@ -367,27 +373,6 @@ public class CreateScheduleFragment extends Fragment {
         }
         return filePath;
     }
-
-    private void setLatestImageSchedule() {
-        String filePath;
-        String[] projection = new String[]{
-                MediaStore.Images.ImageColumns._ID,
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.ImageColumns.DATE_TAKEN,
-                MediaStore.Images.ImageColumns.MIME_TYPE
-        };
-        Cursor cursor = getContext().getContentResolver()
-                .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
-                        null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
-
-        cursor.moveToFirst();
-        filePath = cursor.getString(1);
-        // Bitmap bm = BitmapFactory.decodeFile(filePath);
-        // binding.imageSchedule.setImageBitmap(bm);
-        selectedImagePath = filePath;
-    }
-
 
     private void showAddURLDialog() {
         if (dialogAddURL == null) {

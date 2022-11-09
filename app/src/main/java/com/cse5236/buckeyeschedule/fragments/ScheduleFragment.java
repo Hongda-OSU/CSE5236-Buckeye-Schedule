@@ -9,10 +9,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
@@ -20,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,8 +44,15 @@ import com.cse5236.buckeyeschedule.listeners.ScheduleListener;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class ScheduleFragment extends Fragment implements ScheduleListener {
 
@@ -50,6 +60,7 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     private ScheduleViewModel scheduleViewModel;
     private ScheduleAdapter scheduleAdapter;
     private AlertDialog dialogAddURL;
+    private String latestImageTaken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,12 +125,27 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
             ((MainActivity) getActivity()).replaceFragment(new CreateScheduleFragment(), "Create Schedule");
         });
         binding.imageTakePhoto.setOnClickListener(v -> {
-
+            boolean isCameraPermissionGranted;
+            boolean isImageSavingPermissionGranted;
+            isCameraPermissionGranted = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+            isImageSavingPermissionGranted = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            List<String> permissionRequest = new ArrayList<>();
+            if (!isCameraPermissionGranted) {
+                permissionRequest.add(Manifest.permission.CAMERA);
+            }
+            if (!isImageSavingPermissionGranted) {
+                permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (!permissionRequest.isEmpty()) {
+                requestCameraActionPermissionLauncher.launch(permissionRequest.toArray(new String[0]));
+            } else {
+                takePhoto();
+            }
         });
         binding.imageAddImage.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
                     PackageManager.PERMISSION_GRANTED) {
-                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                requestPhotoPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
             } else {
                 selectImage();
             }
@@ -132,10 +158,25 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        pickImage.launch(intent);
+        pickImageLauncher.launch(intent);
     }
 
-    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+    private void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        takePhotoLauncher.launch(intent);
+    }
+
+//    private File createImageFile() throws IOException {
+//        String timeStamp = new SimpleDateFormat("yyyyMMDD_HHmmss").format(new Date());
+//        String imageFileName = "Image_" + timeStamp + "_";
+//        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+//        latestImageTaken = image.getAbsolutePath();
+//        return image;
+//    }
+
+    private ActivityResultLauncher<String> requestPhotoPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(), result -> {
                 if (result) {
                     // PERMISSION GRANTED
@@ -147,7 +188,7 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
             }
     );
 
-    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -162,8 +203,38 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
                             CreateScheduleFragment createScheduleFragment = new CreateScheduleFragment();
                             createScheduleFragment.setArguments(bundle);
                             ((MainActivity) getActivity()).replaceFragment(createScheduleFragment, "Create Schedule");
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                        } catch (Exception e) {
+                            showToast(e.getMessage());
+                        }
+                    }
+                }
+            }
+    );
+
+    private ActivityResultLauncher<String[]> requestCameraActionPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                if (result.get(Manifest.permission.CAMERA) && result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    takePhoto();
+                } else {
+                    showToast("Permission Denied!");
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> takePhotoLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getData() != null) {
+                        try {
+                            latestImageTaken = getLatestImageTaken();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("latestImageTaken", latestImageTaken);
+                            CreateScheduleFragment createScheduleFragment = new CreateScheduleFragment();
+                            createScheduleFragment.setArguments(bundle);
+                            ((MainActivity) getActivity()).replaceFragment(createScheduleFragment, "Create Schedule");
+                        } catch (Exception e) {
+                            showToast(e.getMessage());
                         }
                     }
                 }
@@ -236,6 +307,24 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
 //        }
 //        new GetScheduleTask().execute();
 //   }
+
+    private String getLatestImageTaken() {
+        String filePath;
+        String[] projection = new String[]{
+                MediaStore.Images.ImageColumns._ID,
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.ImageColumns.DATE_TAKEN,
+                MediaStore.Images.ImageColumns.MIME_TYPE
+        };
+        Cursor cursor = getContext().getContentResolver()
+                .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+                        null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+
+        cursor.moveToFirst();
+        filePath = cursor.getString(1);
+        return filePath;
+    }
 
     @Override
     public void onDestroyView() {
