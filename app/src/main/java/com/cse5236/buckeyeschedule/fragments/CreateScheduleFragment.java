@@ -2,16 +2,25 @@ package com.cse5236.buckeyeschedule.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,8 +35,10 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
@@ -35,6 +46,7 @@ import com.cse5236.buckeyeschedule.activities.MainActivity;
 import com.cse5236.buckeyeschedule.databinding.FragmentCreateScheduleBinding;
 import com.cse5236.buckeyeschedule.entities.Schedule;
 import com.cse5236.buckeyeschedule.factory.ScheduleViewModelFactory;
+import com.cse5236.buckeyeschedule.reminder.ReminderBroadcast;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -42,6 +54,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -52,8 +65,10 @@ public class CreateScheduleFragment extends Fragment {
     private String selectedScheduleColor = "#333333";
     private String selectedImagePath = "";
     private AlertDialog dialogAddURL;
+    private AlertDialog dialogAddReminder;
     private AlertDialog dialogDeleteSchedule;
     private Schedule availableSchedule;
+    private Calendar calendar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +82,7 @@ public class CreateScheduleFragment extends Fragment {
         setTime();
         setListeners();
         setSubtitleIndicatorColor();
+        createNotificationChannel();
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             availableSchedule = (Schedule) bundle.getSerializable("schedule");
@@ -265,6 +281,11 @@ public class CreateScheduleFragment extends Fragment {
             showAddURLDialog();
         });
 
+        binding.layoutMiscellaneous.layoutAddReminder.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            showAddReminderDialog();
+        });
+
         if (availableSchedule != null) {
             layoutMiscellaneous.findViewById(R.id.layoutDeleteSchedule).setVisibility(View.VISIBLE);
             layoutMiscellaneous.findViewById(R.id.layoutDeleteSchedule).setOnClickListener(v -> {
@@ -291,6 +312,18 @@ public class CreateScheduleFragment extends Fragment {
                     layoutMiscellaneous.findViewById(R.id.viewColor1).performClick();
                     break;
             }
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= 26){
+            CharSequence name = "BuckeyeScheduleChannel";
+            String description = "Reminder channel from Buckeye Schedule";
+            int important = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifyBuckeyeSchedule", name, important);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 
@@ -408,6 +441,96 @@ public class CreateScheduleFragment extends Fragment {
         dialogAddURL.show();
     }
 
+    private void showAddReminderDialog(){
+        if (dialogAddReminder == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            View view = LayoutInflater.from(getActivity()).inflate(
+                    R.layout.layout_add_reminder,
+                    (ViewGroup) getActivity().findViewById(R.id.layoutAddReminderContainer)
+            );
+            builder.setView(view);
+            dialogAddReminder = builder.create();
+            if (dialogAddReminder.getWindow() != null) {
+                dialogAddReminder.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            final EditText inputReminder = view.findViewById(R.id.inputReminder);
+            inputReminder.requestFocus();
+            inputReminder.setOnClickListener(v -> {
+                showDateTimeDialog(inputReminder);
+            });
+            view.findViewById(R.id.textAdd).setOnClickListener(v -> {
+                if (inputReminder.getText().toString().trim().isEmpty()) {
+                    showToast("Pick a Date and Time");
+                } else {
+                    Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0 , intent, PendingIntent.FLAG_MUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                    // long timeAtButtonClick = System.currentTimeMillis();
+                    long timeToRemind = calendar.getTimeInMillis();
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, timeToRemind, pendingIntent);
+                    showToast("Reminder create success");
+                    dialogAddReminder.dismiss();
+                }
+            });
+            view.findViewById(R.id.textCancel).setOnClickListener(v -> {
+                dialogAddReminder.dismiss();
+            });
+        }
+        dialogAddReminder.show();
+    }
+
+    private void showDateDialog(final EditText inputReminder){
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
+                inputReminder.setText(simpleDateFormat.format(calendar.getTime()));
+            }
+        };
+        new DatePickerDialog(getActivity(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void showTimeDialog(final EditText inputReminder){
+        Calendar calendar = Calendar.getInstance();
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH-mm");
+                inputReminder.setText(simpleDateFormat.format(calendar.getTime()));
+            }
+        };
+        new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
+
+    }
+
+    private void showDateTimeDialog(final EditText inputReminder){
+        calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+                        inputReminder.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                };
+                new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
+            }
+        };
+        new DatePickerDialog(getActivity(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
 
     @Override
     public void onDestroyView() {

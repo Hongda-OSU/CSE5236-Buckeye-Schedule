@@ -20,6 +20,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSearchIcon">#DBDBDB</color>
     <color name="colorTextHint">#7B7B7B</color>
+    <color name="colorFilter">#7B7B7B</color>
     <color name="colorQuickActionsBackground">#2F2D2E</color>
     <color name="colorIcons">#A4A4A4</color>
     <color name="colorTextSubtitle">#CECECE</color>
