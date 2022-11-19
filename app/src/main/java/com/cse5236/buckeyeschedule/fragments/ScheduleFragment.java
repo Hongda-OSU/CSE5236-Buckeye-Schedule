@@ -184,7 +184,8 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMDD_HHmmss").format(new Date());
         String imageFileName = "Image_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         latestImageTaken = image.getAbsolutePath();
         return image;

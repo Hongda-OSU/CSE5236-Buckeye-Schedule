@@ -465,8 +465,12 @@ public class CreateScheduleFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0 , intent, PendingIntent.FLAG_MUTABLE);
                     AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                    // long timeAtButtonClick = System.currentTimeMillis();
+                    long timeAtButtonClick = System.currentTimeMillis();
                     long timeToRemind = calendar.getTimeInMillis();
+                    if (timeToRemind < timeAtButtonClick) {
+                        showToast("Can't remind the past.");
+                        return;
+                    }
                     alarmManager.set(AlarmManager.RTC_WAKEUP, timeToRemind, pendingIntent);
                     showToast("Reminder create success");
                     dialogAddReminder.dismiss();

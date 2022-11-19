@@ -4,7 +4,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign In</string>
-    <string name="sign_up_new_account">Create a new account</string>
+    <string name="sign_up_new_account">Sign Up</string>
     <string name="profile_image">Profile Image</string>
     <string name="user_name">User Name</string>
     <string name="confirm_password">Confirm Password</string>
