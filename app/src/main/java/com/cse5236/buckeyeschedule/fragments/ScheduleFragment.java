@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -247,11 +248,33 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     galleryAddPic();
-                    if (result.getData() != null) {
+                    if (latestImageTaken != null) {
                         try {
+                            ExifInterface ei = new ExifInterface(latestImageTaken);
+                            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                                    ExifInterface.ORIENTATION_UNDEFINED);
+                            int rotation;
+                            switch(orientation) {
+                                case ExifInterface.ORIENTATION_ROTATE_90:
+                                    rotation = 90;
+                                    break;
+
+                                case ExifInterface.ORIENTATION_ROTATE_180:
+                                    rotation = 180;
+                                    break;
+
+                                case ExifInterface.ORIENTATION_ROTATE_270:
+                                    rotation = 270;
+                                    break;
+
+                                case ExifInterface.ORIENTATION_NORMAL:
+                                default:
+                                    rotation = 0;
+                            }
                             //latestImageTaken = getLatestImageTaken();
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("latestImageTaken", latestImageTaken);
+                            bundle.putSerializable("rotation", rotation);
                             CreateScheduleFragment createScheduleFragment = new CreateScheduleFragment();
                             createScheduleFragment.setArguments(bundle);
                             ((MainActivity) getActivity()).replaceFragment(createScheduleFragment, "Create Schedule");
