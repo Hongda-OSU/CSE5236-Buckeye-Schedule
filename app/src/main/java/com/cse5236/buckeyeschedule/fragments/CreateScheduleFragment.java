@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -104,9 +105,12 @@ public class CreateScheduleFragment extends Fragment {
             if (latestImageTaken != null) {
                 selectedImagePath = latestImageTaken;
                 int rotation = (int) bundle.getSerializable("rotation");
-                binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(latestImageTaken));
+                Bitmap bitmap  = BitmapFactory.decodeFile(selectedImagePath);
+                Matrix matrix = new Matrix();
+                matrix.postRotate(rotation);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                binding.imageSchedule.setImageBitmap(rotatedBitmap);
                 binding.imageSchedule.setVisibility(View.VISIBLE);
-                binding.imageSchedule.setRotation(rotation);
                 binding.imageRemoveImage.setVisibility(View.VISIBLE);
             }
         }
