@@ -79,28 +79,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        showToast("Buckeye Schedule terminated!");
         Log.d("Main activity lifecycle","MainActivity onDestroy invoked");
     }
 
     private void setListeners() {
-        binding.imageSignOut.setOnClickListener(v -> signOut());
+        //binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.imageProfile.setOnClickListener(v -> {
             replaceFragment(new AccountFragment(), "Account");
+            binding.imageBack.setVisibility(View.VISIBLE);
         });
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.schedule:
-                    replaceFragment(new ScheduleFragment(), "Schedule");
-                    break;
-                case R.id.search:
-                    replaceFragment(new SearchFragment(), "Search");
-                    break;
-                case R.id.account:
-                    replaceFragment(new AccountFragment(), "Account");
-                    break;
-            }
-            return true;
+        binding.imageBack.setOnClickListener(v -> {
+            replaceFragment(new ScheduleFragment(), "Schedule");
+            binding.imageBack.setVisibility(View.INVISIBLE);
         });
+//        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+//            switch (item.getItemId()) {
+//                case R.id.schedule:
+//                    replaceFragment(new ScheduleFragment(), "Schedule");
+//                    break;
+//                case R.id.search:
+//                    replaceFragment(new SearchFragment(), "Search");
+//                    break;
+//                case R.id.account:
+//                    replaceFragment(new AccountFragment(), "Account");
+//                    break;
+//            }
+//            return true;
+//        });
     }
 
     public void replaceFragment(Fragment fragment, String tag){
@@ -136,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void miniIconHelper(Boolean display) {
         if (!display) {
-            binding.imageSignOut.setVisibility(View.INVISIBLE);
+            //binding.imageSignOut.setVisibility(View.INVISIBLE);
             binding.imageProfile.setVisibility(View.INVISIBLE);
         } else {
-            binding.imageSignOut.setVisibility(View.VISIBLE);
+            //binding.imageSignOut.setVisibility(View.VISIBLE);
             binding.imageProfile.setVisibility(View.VISIBLE);
         }
     }
@@ -148,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentByTag("Account");
         if (f instanceof AccountFragment && f.isVisible()) {
-            binding.imageSignOut.setVisibility(View.VISIBLE);
+            //binding.imageSignOut.setVisibility(View.VISIBLE);
             binding.imageProfile.setVisibility(View.VISIBLE);
         }
         if(getFragmentManager().getBackStackEntryCount() > 0){
