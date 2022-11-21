@@ -4,9 +4,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -45,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        isNetworkConnected();
         Log.d("activity lifecycle","SignUpActivity onStart invoked");
     }
 
@@ -184,6 +187,14 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             binding.buttonSignUp.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (!(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
+            showToast("Network connectivity lost! Please connect to network");
         }
     }
 }

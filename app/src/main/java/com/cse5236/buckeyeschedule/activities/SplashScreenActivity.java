@@ -2,7 +2,9 @@ package com.cse5236.buckeyeschedule.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.databinding.ActivitySplashScreenBinding;
@@ -53,6 +56,13 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        isNetworkConnected();
+        Log.d("activity lifecycle","SplashScreenActivity onStart invoked");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.d("activity lifecycle","SplashScreenActivity onResume invoked");
@@ -76,5 +86,17 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d("activity lifecycle","SplashScreenActivity onDestroy invoked");
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (!(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
+            showToast("Network connectivity lost! Please connect to network");
+        }
     }
 }

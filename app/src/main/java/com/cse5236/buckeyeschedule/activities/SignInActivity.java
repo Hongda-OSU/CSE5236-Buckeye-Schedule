@@ -2,7 +2,9 @@ package com.cse5236.buckeyeschedule.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -38,6 +40,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        isNetworkConnected();
         Log.d("activity lifecycle","SignInActivity onStart invoked");
     }
 
@@ -127,6 +130,14 @@ public class SignInActivity extends AppCompatActivity {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (!(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
+            showToast("Network connectivity lost! Please connect to network");
         }
     }
 }
