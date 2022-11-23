@@ -73,7 +73,11 @@ public class CreateScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).setTitle("Create Schedule");
+        if (Constants.LANGUAGE == "zh"){
+            ((MainActivity) getActivity()).setTitle("创建计划");
+        } else {
+            ((MainActivity) getActivity()).setTitle("Create Schedule");
+        }
         ((MainActivity) getActivity()).miniIconHelper(false);
         binding = FragmentCreateScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
@@ -90,7 +94,11 @@ public class CreateScheduleFragment extends Fragment {
             String latestImageTaken = (String) bundle.getSerializable("latestImageTaken");
             String url = (String) bundle.getSerializable("URL");
             if (availableSchedule != null) {
-                ((MainActivity) getActivity()).setTitle("View Schedule");
+                if (Constants.LANGUAGE == "zh"){
+                    ((MainActivity) getActivity()).setTitle("查看计划");
+                } else {
+                    ((MainActivity) getActivity()).setTitle("View Schedule");
+                }
                 setViewOrUpdateSchedule();
             }
             if (selectedImagePath != null) {

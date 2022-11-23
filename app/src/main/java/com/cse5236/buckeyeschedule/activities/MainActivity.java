@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -22,6 +23,7 @@ import com.cse5236.buckeyeschedule.fragments.AccountFragment;
 import com.cse5236.buckeyeschedule.fragments.ScheduleFragment;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.utilities.PreferenceManager;
+import com.cse5236.buckeyeschedule.wrapper.MyContextWrapper;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -174,5 +176,10 @@ public class MainActivity extends AppCompatActivity {
         if (!(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
             showToast("Network connectivity lost! Please connect to network");
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase,Constants.LANGUAGE));
     }
 }

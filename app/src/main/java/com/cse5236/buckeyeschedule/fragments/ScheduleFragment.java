@@ -60,7 +60,11 @@ public class ScheduleFragment extends Fragment implements ScheduleListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).setTitle("My Schedule");
+        if (Constants.LANGUAGE == "zh"){
+            ((MainActivity) getActivity()).setTitle("我的计划");
+        } else {
+            ((MainActivity) getActivity()).setTitle("My Schedule");
+        }
         ((MainActivity) getActivity()).miniIconHelper(true);
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
         View v = binding.getRoot();

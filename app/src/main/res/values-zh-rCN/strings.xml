@@ -34,4 +34,6 @@
     <string name="miscellaneous">杂项</string>
     <string name="pick_color">选择颜色</string>
     <string name="add_image">添加图片</string>
+    <string name="change_language">改变语言</string>
+    <string name="enter_key_words">输入关键字...</string>
 </resources>

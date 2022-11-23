@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.cse5236.buckeyeschedule.databinding.ActivitySignUpBinding;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.utilities.PreferenceManager;
+import com.cse5236.buckeyeschedule.wrapper.MyContextWrapper;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -196,5 +197,10 @@ public class SignUpActivity extends AppCompatActivity {
         if (!(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
             showToast("Network connectivity lost! Please connect to network");
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, Constants.LANGUAGE));
     }
 }

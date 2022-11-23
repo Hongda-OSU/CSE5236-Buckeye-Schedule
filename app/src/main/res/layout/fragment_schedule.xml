@@ -39,7 +39,7 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:background="@null"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Enter key words..."
+                android:hint="@string/enter_key_words"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"

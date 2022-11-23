@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.databinding.ActivitySplashScreenBinding;
 import com.cse5236.buckeyeschedule.utilities.Constants;
+import com.cse5236.buckeyeschedule.wrapper.MyContextWrapper;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -98,5 +99,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (!(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
             showToast("Network connectivity lost! Please connect to network");
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, Constants.LANGUAGE));
     }
 }

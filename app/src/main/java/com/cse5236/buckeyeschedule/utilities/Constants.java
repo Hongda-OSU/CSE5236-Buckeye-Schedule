@@ -10,4 +10,5 @@ public class Constants {
     public static final String KEY_USER_ID = "userId";
     public static final String KEY_IMAGE = "image";
     public static final int SPLASH_SCREEN = 3000;
+    public static String LANGUAGE = "en";
 }

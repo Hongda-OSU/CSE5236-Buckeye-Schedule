@@ -33,4 +33,6 @@
     <string name="miscellaneous">Miscellaneous</string>
     <string name="pick_color">Pick Color</string>
     <string name="add_image">Add Image</string>
+    <string name="change_language">Change Language</string>
+    <string name="enter_key_words">Enter key words...</string>
 </resources>
