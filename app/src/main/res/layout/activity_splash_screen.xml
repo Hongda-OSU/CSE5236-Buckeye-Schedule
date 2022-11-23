@@ -33,7 +33,7 @@
             android:layout_marginTop="55dp"
             android:fontFamily="casual"
             android:rotationX="1"
-            android:text="BUCKEYE SCHEDULE"
+            android:text="@string/buckeye_schedule"
             android:textAlignment="center"
             android:textColor="#090909"
             android:textSize="60sp"

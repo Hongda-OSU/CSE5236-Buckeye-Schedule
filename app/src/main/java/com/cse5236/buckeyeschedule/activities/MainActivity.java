@@ -20,7 +20,6 @@ import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.databinding.ActivityMainBinding;
 import com.cse5236.buckeyeschedule.fragments.AccountFragment;
 import com.cse5236.buckeyeschedule.fragments.ScheduleFragment;
-import com.cse5236.buckeyeschedule.fragments.SearchFragment;
 import com.cse5236.buckeyeschedule.utilities.Constants;
 import com.cse5236.buckeyeschedule.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentReference;

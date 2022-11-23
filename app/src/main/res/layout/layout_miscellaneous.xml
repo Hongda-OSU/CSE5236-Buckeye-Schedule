@@ -16,7 +16,7 @@
         android:fontFamily="@font/ubuntu_medium"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="Miscellaneous"
+        android:text="@string/miscellaneous"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_13ssp" />
 
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
-            android:text="Pick Color"
+            android:text="@string/pick_color"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_12ssp" />
         
@@ -151,7 +151,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
-            android:text="Add Image"
+            android:text="@string/add_image"
             android:textColor="@color/colorIcons"
             android:textSize="@dimen/_12sdp" />
 
@@ -180,7 +180,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
-            android:text="Add URL"
+            android:text="@string/add_url"
             android:textColor="@color/colorIcons"
             android:textSize="@dimen/_12ssp" />
 
@@ -209,7 +209,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
-            android:text="Add Reminder"
+            android:text="@string/add_reminder"
             android:textColor="@color/colorIcons"
             android:textSize="@dimen/_12ssp" />
 

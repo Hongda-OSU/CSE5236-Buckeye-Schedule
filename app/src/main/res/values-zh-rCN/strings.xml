@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">七叶树计划</string>
+    <string name="email">电子邮件</string>
+    <string name="password">密码</string>
+    <string name="sign_in">登入</string>
+    <string name="profile_image">资料图片</string>
+    <string name="user_name">用户名</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="sign_up">注册账户</string>
+    <string name="create_new_account">建立新帐户</string>
+    <string name="back_to_sign_in">登入账户</string>
+    <string name="don_t_have_account">没有帐号？</string>
+    <string name="sign_out">登出</string>
+    <string name="delete_account">删除帐户</string>
+    <string name="update_password">更新密码</string>
+    <string name="username">用户名：</string>
+    <string name="schedule_title">计划标题</string>
+    <string name="already_have_an_account">已经有帐户了？</string>
+    <string name="buckeye_schedule">七叶树计划</string>
+    <string name="email_">电子邮件:</string>
+    <string name="password_">密码:</string>
+    <string name="schedule_subtitle">计划复标题</string>
+    <string name="type_your_schedule_here">在此处输入您的计划安排...</string>
+    <string name="add_reminder">添加提醒</string>
+    <string name="cancel">取消</string>
+    <string name="add">添加</string>
+    <string name="add_url">添加网址</string>
+    <string name="enter_url">输入网址</string>
+    <string name="click_here_to_pick_a_time">点击此处选择时间</string>
+    <string name="delete_schedule">删除计划</string>
+    <string name="are_you_sure_you_want_to_delete_this_schedule">您确定要删除此计划吗？</string>
+    <string name="delete">删除</string>
+    <string name="miscellaneous">杂项</string>
+    <string name="pick_color">选择颜色</string>
+    <string name="add_image">添加图片</string>
+</resources>

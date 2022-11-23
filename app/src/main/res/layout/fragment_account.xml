@@ -86,7 +86,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email:"
+                android:text="@string/email_"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_12ssp"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/ubuntu_bold"
-                    android:text="Password:"
+                    android:text="@string/password_"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_12ssp" />
 
@@ -204,8 +204,7 @@
             android:layout_marginTop="@dimen/_18sdp"
             android:layout_marginBottom="@dimen/_18sdp"
             android:gravity="center"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/updatePasswordFragment"
@@ -213,19 +212,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/update_password"
                 android:textColor="@color/colorWhite"
-                android:textSize="18sp"
+                android:textSize="@dimen/_14ssp"
                 android:textStyle="bold"
                 android:fontFamily="@font/ubuntu_bold" />
 
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="@dimen/_18sdp"
             android:gravity="center"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/deleteAccountFragment"
@@ -233,11 +232,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/delete_account"
                 android:textColor="@color/colorWhite"
-                android:textSize="18sp"
+                android:textSize="@dimen/_14ssp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 

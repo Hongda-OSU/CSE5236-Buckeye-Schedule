@@ -56,6 +56,7 @@
         android:textColor="@color/colorTextSubtitle"
         android:textSize="@dimen/_18ssp"
         android:textStyle="bold"
+        android:fontFamily="@font/ubuntu_bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageProfile"
         app:layout_constraintEnd_toStartOf="@+id/imageSignOut"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"
