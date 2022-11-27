@@ -71,4 +71,8 @@ dependencies {
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
+    // Espresso
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 }
