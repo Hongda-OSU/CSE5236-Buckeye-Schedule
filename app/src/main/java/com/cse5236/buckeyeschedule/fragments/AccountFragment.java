@@ -1,7 +1,6 @@
 package com.cse5236.buckeyeschedule.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,14 +22,11 @@ import com.cse5236.buckeyeschedule.activities.SignInActivity;
 import com.cse5236.buckeyeschedule.activities.SplashScreenActivity;
 import com.cse5236.buckeyeschedule.databinding.FragmentAccountBinding;
 import com.cse5236.buckeyeschedule.utilities.Constants;
-import com.cse5236.buckeyeschedule.utilities.PreferenceManager;
-import com.cse5236.buckeyeschedule.wrapper.MyContextWrapper;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
-    private PreferenceManager preferenceManager;
     private DocumentSnapshot documentSnapshot;
     private AlertDialog.Builder builder;
 
@@ -46,7 +42,6 @@ public class AccountFragment extends Fragment {
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         builder = new AlertDialog.Builder(getActivity());
         View v = binding.getRoot();
-        preferenceManager = ((MainActivity) getActivity()).preferenceManager;
         //Toast.makeText(getActivity(), "Account Fragment", Toast.LENGTH_SHORT).show();
         loadUserDetails();
         setListeners();
@@ -61,7 +56,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void loadUserDetails() {
-        binding.userNameFragment.setText(preferenceManager.getString(Constants.KEY_NAME));
+        binding.userNameFragment.setText(((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_NAME));
         ((MainActivity) getActivity()).currentUser.get()
                 .addOnCompleteListener(task -> {
                     documentSnapshot = task.getResult();
@@ -70,7 +65,7 @@ public class AccountFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> binding.emailFragment.setText("Unable to get user information."));
         ;
-        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
+        byte[] bytes = Base64.decode(((MainActivity) getActivity()).preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         binding.imageFragment.setImageBitmap(bitmap);
     }
@@ -149,7 +144,7 @@ public class AccountFragment extends Fragment {
         ((MainActivity) getActivity()).currentUser
                 .delete()
                 .addOnSuccessListener(unused -> {
-                    preferenceManager.clear();
+                    ((MainActivity) getActivity()).preferenceManager.clear();
                     startActivity(new Intent(getActivity(), SignInActivity.class));
                     getActivity().finish();
                 })
@@ -169,10 +164,6 @@ public class AccountFragment extends Fragment {
 
     private void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    protected void attachBaseContext(Context newBase) {
-
     }
 
 }
