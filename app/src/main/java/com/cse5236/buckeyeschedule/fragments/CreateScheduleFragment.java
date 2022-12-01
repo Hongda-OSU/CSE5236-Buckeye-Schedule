@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.cse5236.buckeyeschedule.R;
 import com.cse5236.buckeyeschedule.activities.MainActivity;
+import com.cse5236.buckeyeschedule.bitmaps.BitmapHelper;
 import com.cse5236.buckeyeschedule.databinding.FragmentCreateScheduleBinding;
 import com.cse5236.buckeyeschedule.entities.Schedule;
 import com.cse5236.buckeyeschedule.factory.ScheduleViewModelFactory;
@@ -52,6 +53,7 @@ import com.cse5236.buckeyeschedule.viewmodel.ScheduleViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -99,10 +101,21 @@ public class CreateScheduleFragment extends Fragment {
                 } else {
                     ((MainActivity) getActivity()).setTitle("View Schedule");
                 }
-                setViewOrUpdateSchedule();
+                try {
+                    setViewOrUpdateSchedule();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if (selectedImagePath != null) {
-                binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                Bitmap rotatedBitmap = null;
+                try {
+                    rotatedBitmap = BitmapHelper.modifyOrientation(bitmap, selectedImagePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                binding.imageSchedule.setImageBitmap(rotatedBitmap);
                 binding.imageSchedule.setVisibility(View.VISIBLE);
                 binding.imageRemoveImage.setVisibility(View.VISIBLE);
             }
@@ -151,17 +164,20 @@ public class CreateScheduleFragment extends Fragment {
         );
     }
 
-    private void setViewOrUpdateSchedule() {
+    private void setViewOrUpdateSchedule() throws IOException {
         binding.inputScheduleTitle.setText(availableSchedule.getScheduleTitle());
         binding.inputScheduleSubtitle.setText(availableSchedule.getScheduleSubtitle());
         binding.inputSchedule.setText(availableSchedule.getScheduleDescription());
         binding.textDateTime.setText(availableSchedule.getDateTime());
         if (availableSchedule.getImagePath() != null && !availableSchedule.getImagePath().trim().isEmpty()) {
             //Log.d("ImagePath", availableSchedule.getImagePath());
-            binding.imageSchedule.setImageBitmap(BitmapFactory.decodeFile(availableSchedule.getImagePath()));
+            String path = availableSchedule.getImagePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            Bitmap rotatedBitmap = BitmapHelper.modifyOrientation(bitmap, path);
+            binding.imageSchedule.setImageBitmap(rotatedBitmap);
             binding.imageSchedule.setVisibility(View.VISIBLE);
             binding.imageRemoveImage.setVisibility(View.VISIBLE);
-            selectedImagePath = availableSchedule.getImagePath();
+            selectedImagePath = path;
         }
         if (availableSchedule.getWebLink() != null && !availableSchedule.getWebLink().trim().isEmpty()) {
             binding.textWebURL.setText(availableSchedule.getWebLink());

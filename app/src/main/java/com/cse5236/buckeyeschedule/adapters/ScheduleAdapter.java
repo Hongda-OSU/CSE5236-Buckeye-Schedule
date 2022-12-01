@@ -1,5 +1,6 @@
 package com.cse5236.buckeyeschedule.adapters;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -15,10 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse5236.buckeyeschedule.R;
+import com.cse5236.buckeyeschedule.bitmaps.BitmapHelper;
 import com.cse5236.buckeyeschedule.entities.Schedule;
 import com.cse5236.buckeyeschedule.listeners.ScheduleListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -52,7 +55,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
-        holder.setSchedule(schedules.get(position));
+        try {
+            holder.setSchedule(schedules.get(position));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         holder.layoutSchedule.setOnClickListener(v -> {
             scheduleListener.onScheduleClicked(schedules.get(position), position);
         });
@@ -83,7 +90,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
             imageSchedule = itemView.findViewById(R.id.imageSchedule);
         }
 
-        void setSchedule(Schedule schedule) {
+        void setSchedule(Schedule schedule) throws IOException {
             textTitle.setText(schedule.getScheduleTitle());
             if (schedule.getScheduleSubtitle().trim().isEmpty()) {
                 textSubtitle.setVisibility(View.GONE);
@@ -99,7 +106,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
             }
 
             if (schedule.getImagePath() != null) {
-                imageSchedule.setImageBitmap(BitmapFactory.decodeFile(schedule.getImagePath()));
+                String path = schedule.getImagePath();
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                Bitmap rotatedBitmap = BitmapHelper.modifyOrientation(bitmap, path);
+                imageSchedule.setImageBitmap(rotatedBitmap);
                 imageSchedule.setVisibility(View.VISIBLE);
             } else {
                 imageSchedule.setVisibility(View.GONE);
