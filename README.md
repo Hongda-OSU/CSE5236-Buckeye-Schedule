@@ -5,6 +5,6 @@
 - Applied MVVM design pattern, Room database, Adapter pattern for local data persistence and UI controls.
 - Utilized NoSQL database like Firestore to preserve user data on cloud.
 - Functionalized internal services like photo taking and schedule reminders.
-- Implemented multiple NFRs including user permissions and multi-languages.
+- Implemented different NFRs including user permissions and multi-languages.
 ## Video
 - https://www.youtube.com/watch?v=yEP96enlJ8k
